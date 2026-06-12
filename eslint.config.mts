@@ -5,7 +5,10 @@ import { defineConfig } from 'eslint/config';
 
 export default defineConfig([
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    ignores: ['package-lock.json', 'playwright-report/**', 'test-results/**'],
+  },
+  {
+    files: ['**/*.{ts}'],
     plugins: { js },
     extends: ['js/recommended'],
     languageOptions: { globals: globals.node },
