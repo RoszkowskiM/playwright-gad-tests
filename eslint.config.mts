@@ -19,7 +19,6 @@ export default defineConfig([
     },
   },
   tseslint.configs.recommended,
-
   {
     rules: {
       'no-console': 'error',
@@ -44,4 +43,9 @@ export default defineConfig([
     },
   },
   eslintPluginPrettierRecommended,
+  {
+    rules: {
+      'prettier/prettier': ['warn', { importOrderSortSpecifiers: true }],
+    },
+  },
 ]);
