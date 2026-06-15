@@ -1,21 +1,25 @@
 import js from '@eslint/js';
+import eslintPluginPlaywright from 'eslint-plugin-playwright';
+import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
-import { defineConfig } from 'eslint/config';
-import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
-import eslintPluginPlaywright from 'eslint-plugin-playwright';
 
 export default defineConfig([
+  { ignores: ['package-lock.json', 'playwright-report/**', 'test-results/**'] },
   {
-    ignores: ['package-lock.json', 'playwright-report/**', 'test-results/**'],
-  },
-  {
-    files: ['**/*.{ts}'],
+    files: ['**/*.ts'],
     plugins: { js },
     extends: ['js/recommended'],
-    languageOptions: { globals: globals.node },
+    languageOptions: {
+      globals: globals.node,
+      parserOptions: {
+        warnOnUnsupportedTypeScriptVersion: false,
+      },
+    },
   },
-  ...tseslint.configs.recommended,
+  tseslint.configs.recommended,
+
   {
     rules: {
       'no-console': 'error',
