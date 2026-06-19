@@ -4,39 +4,57 @@ import { HomePage } from '../../src/pages/home.page';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify service main pages', () => {
-  test('home page title', async ({ page }) => {
-    // Arrange
-    const homePage = new HomePage(page);
+  test(
+    'home page title',
+    {
+      tag: ['@GAD-R01-01'],
+    },
+    async ({ page }) => {
+      // Arrange
+      const homePage = new HomePage(page);
 
-    // Act
-    await homePage.goto();
+      // Act
+      await homePage.goto();
 
-    // Assert
-    const title = await homePage.title();
-    expect(title).toContain('GAD');
-  });
+      // Assert
+      const title = await homePage.title();
+      expect(title).toContain('GAD');
+    },
+  );
 
-  test('articles page', async ({ page }) => {
-    // Arrange
-    const articlesPage = new ArticlesPage(page);
+  test(
+    'articles page',
+    {
+      tag: ['@GAD-R01-02'],
+    },
+    async ({ page }) => {
+      // Arrange
+      const articlesPage = new ArticlesPage(page);
 
-    // Act
-    await articlesPage.goto();
+      // Act
+      await articlesPage.goto();
 
-    // Assert
-    const title = await articlesPage.title();
-    expect(title).toContain('Articles');
-  });
+      // Assert
+      const title = await articlesPage.title();
+      expect(title).toContain('Articles');
+    },
+  );
 
-  test('comments page', async ({ page }) => {
-    // Arrange
-    const commentsPage = new CommentsPage(page);
+  test(
+    'comments page',
+    {
+      tag: ['@GAD-R01-02'],
+    },
+    async ({ page }) => {
+      // Arrange
+      const commentsPage = new CommentsPage(page);
 
-    // Act
-    await commentsPage.goto();
+      // Act
+      await commentsPage.goto();
 
-    // Assert
-    const title = await commentsPage.title();
-    expect(title).toContain('Comments');
-  });
+      // Assert
+      const title = await commentsPage.title();
+      expect(title).toContain('Comments');
+    },
+  );
 });
