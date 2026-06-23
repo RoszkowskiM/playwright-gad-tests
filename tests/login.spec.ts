@@ -13,7 +13,7 @@ test.describe('Verify login', () => {
       // Arrange
       const loginPage = new LoginPage(page);
       const userEmail = testUser1.userEmail;
-      const userPassword = '1234';
+      const userPassword = testUser1.userPassword;
 
       // Act
       await loginPage.goto();
