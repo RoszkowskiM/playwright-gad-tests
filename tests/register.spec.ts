@@ -13,7 +13,8 @@ test.describe('Verify registration', () => {
     async ({ page }) => {
       // Arrange
       await page.goto('/register.html');
-      const userFirstName = faker.person.firstName();
+      const userFirstName = faker.person.firstName().replace(/[^A-Za-z]/g, '');
+      // zastępuje każdy znak niczym (^ = nie)(g = wykonaj dla wszystkich wystąpień)
       const userLastName = faker.person.lastName();
       const userEmail = faker.internet.email({
         firstName: userFirstName,

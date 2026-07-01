@@ -4,12 +4,5 @@
   "editor.codeActionsOnSave": {
     "source.organizeImports": "explicit"
   },
-  "cSpell.ignoreWords": [
-    "trivago",
-    "firstname",
-    "Janusz",
-    "lastname",
-    "Tytanowy",
-    "tytjan"
-  ]
+  "cSpell.ignoreWords": ["trivago", "firstname", "lastname"]
 }
