@@ -1,4 +1,5 @@
 import { randomNewArticle } from '../src/factories/article.factory';
+import { addArticleModel } from '../src/models/article.model';
 import { ArticlePage } from '../src/pages/article.page';
 import { ArticlesPage } from '../src/pages/articles.page';
 import { LoginPage } from '../src/pages/login.page';
@@ -7,6 +8,26 @@ import { AddArticleView } from '../src/views/add-article.view';
 import { expect, test } from '@playwright/test';
 
 test.describe('Verify articles', () => {
+  let loginPage: LoginPage;
+  let articlesPage: ArticlesPage;
+  let addArticleView: AddArticleView;
+  let articleData: addArticleModel;
+
+  test.beforeEach(async ({ page }) => {
+    loginPage = new LoginPage(page);
+    articlesPage = new ArticlesPage(page);
+    addArticleView = new AddArticleView(page);
+
+    await loginPage.goto();
+    await loginPage.login(testUser1);
+    await articlesPage.goto();
+    await articlesPage.addArticleButtonLogged.click();
+
+    articleData = randomNewArticle();
+
+    await expect.soft(addArticleView.header).toBeVisible();
+  });
+
   test(
     'create new article',
     {
@@ -14,21 +35,11 @@ test.describe('Verify articles', () => {
     },
     async ({ page }) => {
       // Arrange
-      const loginPage = new LoginPage(page);
-      const articlePage = new ArticlePage(page);
-      const articlesPage = new ArticlesPage(page);
-      const addArticleView = new AddArticleView(page);
-
-      await loginPage.goto();
-      await loginPage.login(testUser1);
-      await articlesPage.goto();
-
-      const articleData = randomNewArticle();
       const expectedText = 'Article was created';
 
+      const articlePage = new ArticlePage(page);
+
       // Act
-      await articlesPage.addArticleButtonLogged.click();
-      await expect.soft(addArticleView.header).toBeVisible();
       await addArticleView.createArticle(articleData);
 
       // Assert
@@ -41,27 +52,16 @@ test.describe('Verify articles', () => {
   );
 
   test(
-    'create new article with empty title field',
+    'not create new article with empty title field',
     {
       tag: ['@GAD-R04-01'],
     },
-    async ({ page }) => {
+    async () => {
       // Arrange
-      const loginPage = new LoginPage(page);
-      const articlesPage = new ArticlesPage(page);
-      const addArticleView = new AddArticleView(page);
-
-      const articleData = randomNewArticle();
-      articleData.body = '';
-
-      await loginPage.goto();
-      await loginPage.login(testUser1);
-      await articlesPage.goto();
-
       const expectedErrorMessage = 'Article was not created';
+      articleData.title = '';
 
       // Act
-      await articlesPage.addArticleButtonLogged.click();
       await addArticleView.createArticle(articleData);
 
       // Assert
@@ -70,27 +70,16 @@ test.describe('Verify articles', () => {
   );
 
   test(
-    'create new article with empty body field',
+    'not create new article with empty body field',
     {
       tag: ['@GAD-R04-01'],
     },
-    async ({ page }) => {
+    async () => {
       // Arrange
-      const loginPage = new LoginPage(page);
-      const articlesPage = new ArticlesPage(page);
-      const addArticleView = new AddArticleView(page);
-
-      const articleData = randomNewArticle();
+      const expectedErrorMessage = 'Article was not created';
       articleData.body = '';
 
-      await loginPage.goto();
-      await loginPage.login(testUser1);
-      await articlesPage.goto();
-
-      const expectedErrorMessage = 'Article was not created';
-
       // Act
-      await articlesPage.addArticleButtonLogged.click();
       await addArticleView.createArticle(articleData);
 
       // Assert
