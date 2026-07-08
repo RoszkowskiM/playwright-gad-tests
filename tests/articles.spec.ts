@@ -15,32 +15,86 @@ test.describe('Verify articles', () => {
     async ({ page }) => {
       // Arrange
       const loginPage = new LoginPage(page);
+      const articlePage = new ArticlePage(page);
+      const articlesPage = new ArticlesPage(page);
+      const addArticleView = new AddArticleView(page);
+
       await loginPage.goto();
       await loginPage.login(testUser1);
-
-      const articlesPage = new ArticlesPage(page);
       await articlesPage.goto();
 
       const articleData = randomNewArticle();
-
       const expectedText = 'Article was created';
 
       // Act
       await articlesPage.addArticleButtonLogged.click();
-
-      const addArticleView = new AddArticleView(page);
       await expect.soft(addArticleView.header).toBeVisible();
-
       await addArticleView.createArticle(articleData);
 
       // Assert
       await expect.soft(addArticleView.alertPopup).toHaveText(expectedText);
-
-      const articlePage = new ArticlePage(page);
       await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
       await expect
         .soft(articlePage.articleBody)
         .toHaveText(articleData.body, { useInnerText: true });
+    },
+  );
+
+  test(
+    'create new article with empty title field',
+    {
+      tag: ['@GAD-R04-01'],
+    },
+    async ({ page }) => {
+      // Arrange
+      const loginPage = new LoginPage(page);
+      const articlesPage = new ArticlesPage(page);
+      const addArticleView = new AddArticleView(page);
+
+      const articleData = randomNewArticle();
+      articleData.body = '';
+
+      await loginPage.goto();
+      await loginPage.login(testUser1);
+      await articlesPage.goto();
+
+      const expectedErrorMessage = 'Article was not created';
+
+      // Act
+      await articlesPage.addArticleButtonLogged.click();
+      await addArticleView.createArticle(articleData);
+
+      // Assert
+      await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
+    },
+  );
+
+  test(
+    'create new article with empty body field',
+    {
+      tag: ['@GAD-R04-01'],
+    },
+    async ({ page }) => {
+      // Arrange
+      const loginPage = new LoginPage(page);
+      const articlesPage = new ArticlesPage(page);
+      const addArticleView = new AddArticleView(page);
+
+      const articleData = randomNewArticle();
+      articleData.body = '';
+
+      await loginPage.goto();
+      await loginPage.login(testUser1);
+      await articlesPage.goto();
+
+      const expectedErrorMessage = 'Article was not created';
+
+      // Act
+      await articlesPage.addArticleButtonLogged.click();
+      await addArticleView.createArticle(articleData);
+
+      // Assert
+      await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
     },
   );
 });
