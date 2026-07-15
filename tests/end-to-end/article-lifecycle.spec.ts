@@ -76,6 +76,8 @@ test.describe('Create, verify and delete article', () => {
     },
     async () => {
       // Arrange
+      const expectedNoResultText = 'No data';
+      const expectedArticlesPageTitle = 'Articles';
       await articlesPage.goToArticle(articleData.title);
 
       // Act
@@ -84,10 +86,12 @@ test.describe('Create, verify and delete article', () => {
       // Assert
       await articlesPage.waitForPageToLoadUrl();
       const title = await articlesPage.getTitle();
-      expect(title).toContain('Articles');
+      expect(title).toContain(expectedArticlesPageTitle);
 
       await articlesPage.searchArticle(articleData.title);
-      await expect(articlesPage.noSearchResult).toHaveText('No data');
+      await expect(articlesPage.noSearchResult).toHaveText(
+        expectedNoResultText,
+      );
     },
   );
 });

@@ -12,6 +12,7 @@ test.describe('Verify login', () => {
     },
     async ({ page }) => {
       // Arrange
+      const expectedWelcomeTitle = 'Welcome';
       const loginPage = new LoginPage(page);
 
       // Act
@@ -22,7 +23,7 @@ test.describe('Verify login', () => {
       const title = await welcomePage.getTitle();
 
       // Assert
-      expect(title).toContain('Welcome');
+      expect(title).toContain(expectedWelcomeTitle);
     },
   );
 
@@ -33,6 +34,7 @@ test.describe('Verify login', () => {
     },
     async ({ page }) => {
       // Arrange
+      const expectedLoginTitle = 'Login';
       const loginPage = new LoginPage(page);
       const loginUserData: LoginUserModel = {
         userEmail: testUser1.userEmail,
@@ -49,7 +51,7 @@ test.describe('Verify login', () => {
       await expect
         .soft(loginPage.loginError)
         .toHaveText('Invalid username or password');
-      expect.soft(title).toContain('Login');
+      expect.soft(title).toContain(expectedLoginTitle);
     },
   );
 });

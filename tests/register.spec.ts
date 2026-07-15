@@ -23,6 +23,8 @@ test.describe('Verify registration', () => {
     async ({ page }) => {
       // Arrange
       const alertPopupText = 'User created';
+      const expectedLoginTitle = 'Login';
+      const expectedWelcomeTitle = 'Welcome';
 
       const loginPage = new LoginPage(page);
       const welcomePage = new WelcomePage(page);
@@ -35,7 +37,7 @@ test.describe('Verify registration', () => {
 
       await loginPage.waitForPageToLoadUrl();
       const titleLogin = await loginPage.getTitle();
-      expect(titleLogin).toContain('Login');
+      expect(titleLogin).toContain(expectedLoginTitle);
 
       // Assert test login
       await loginPage.login({
@@ -44,7 +46,7 @@ test.describe('Verify registration', () => {
       });
 
       const titleWelcome = await welcomePage.getTitle();
-      expect(titleWelcome).toContain('Welcome');
+      expect(titleWelcome).toContain(expectedWelcomeTitle);
     },
   );
 
