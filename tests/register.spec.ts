@@ -34,7 +34,7 @@ test.describe('Verify registration', () => {
       await expect(registerPage.alertPopup).toHaveText(alertPopupText);
 
       await loginPage.waitForPageToLoadUrl();
-      const titleLogin = await loginPage.title();
+      const titleLogin = await loginPage.getTitle();
       expect(titleLogin).toContain('Login');
 
       // Assert test login
@@ -43,7 +43,7 @@ test.describe('Verify registration', () => {
         userPassword: registerUserData.userPassword,
       });
 
-      const titleWelcome = await welcomePage.title();
+      const titleWelcome = await welcomePage.getTitle();
       expect(titleWelcome).toContain('Welcome');
     },
   );
