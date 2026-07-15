@@ -1,4 +1,4 @@
-import { randomNewArticle } from '../src/factories/article.factory';
+import { PrepareRandomNewArticle } from '../src/factories/article.factory';
 import { ArticlePage } from '../src/pages/article.page';
 import { ArticlesPage } from '../src/pages/articles.page';
 import { LoginPage } from '../src/pages/login.page';
@@ -32,7 +32,7 @@ test.describe('Verify articles', () => {
     async () => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
-      const articleData = randomNewArticle();
+      const articleData = PrepareRandomNewArticle();
       articleData.title = '';
 
       // Act
@@ -51,7 +51,7 @@ test.describe('Verify articles', () => {
     async () => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
-      const articleData = randomNewArticle();
+      const articleData = PrepareRandomNewArticle();
       articleData.body = '';
 
       // Act
@@ -72,7 +72,7 @@ test.describe('Verify articles', () => {
         // Arrange
         const expectedMessage = 'Article was created';
         const articlePage = new ArticlePage(page);
-        const articleData = randomNewArticle(128);
+        const articleData = PrepareRandomNewArticle(128);
 
         // Act
         await addArticleView.createArticle(articleData);
@@ -98,7 +98,7 @@ test.describe('Verify articles', () => {
       async () => {
         // Arrange
         const expectedErrorMessage = 'Article was not created';
-        const articleData = randomNewArticle(129);
+        const articleData = PrepareRandomNewArticle(129);
 
         // Act
         await addArticleView.createArticle(articleData);

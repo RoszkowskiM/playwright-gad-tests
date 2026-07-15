@@ -1,4 +1,4 @@
-import { randomNewArticle } from '../../src/factories/article.factory';
+import { PrepareRandomNewArticle } from '../../src/factories/article.factory';
 import { addArticleModel } from '../../src/models/article.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
@@ -36,7 +36,7 @@ test.describe('Create, verify and delete article', () => {
       // Arrange
       const expectedText = 'Article was created';
 
-      articleData = randomNewArticle();
+      articleData = PrepareRandomNewArticle();
 
       // Act
       await articlesPage.addArticleButtonLogged.click();
