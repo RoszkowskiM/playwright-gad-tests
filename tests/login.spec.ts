@@ -14,12 +14,12 @@ test.describe('Verify login', () => {
       // Arrange
       const expectedWelcomeTitle = 'Welcome';
       const loginPage = new LoginPage(page);
+      const welcomePage = new WelcomePage(page);
 
       // Act
       await loginPage.goto();
       await loginPage.login(testUser1);
 
-      const welcomePage = new WelcomePage(page);
       const title = await welcomePage.getTitle();
 
       // Assert
