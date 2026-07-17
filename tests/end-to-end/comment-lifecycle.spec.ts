@@ -1,4 +1,5 @@
-import { PrepareRandomNewArticle } from '../../src/factories/article.factory';
+import { prepareRandomArticle } from '../../src/factories/article.factory';
+import { prepareRandomComment } from '../../src/factories/comment.factory';
 import { addArticleModel } from '../../src/models/article.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
@@ -26,7 +27,7 @@ test.describe('Create, verify and delete comment', () => {
     articlePage = new ArticlePage(page);
     commentPage = new CommentPage(page);
 
-    articleData = PrepareRandomNewArticle();
+    articleData = prepareRandomArticle();
 
     await loginPage.goto();
     await loginPage.login(testUser1);
@@ -45,7 +46,8 @@ test.describe('Create, verify and delete comment', () => {
       // Arrange
       const expectedAlertText = 'Comment was created';
       const expectedAddCommentViewHeader = 'Add New Comment';
-      const commentText = 'Hello!';
+
+      const newCommentData = prepareRandomComment();
 
       // Act
       await articlePage.addCommentButton.click();
@@ -53,7 +55,7 @@ test.describe('Create, verify and delete comment', () => {
       await expect
         .soft(addCommentView.addNewHeader)
         .toHaveText(expectedAddCommentViewHeader);
-      await addCommentView.bodyInput.fill('Hello!');
+      await addCommentView.bodyInput.fill(newCommentData.body);
       await addCommentView.saveButton.click();
 
       // Assert
@@ -61,12 +63,12 @@ test.describe('Create, verify and delete comment', () => {
 
       // Verify comment
       // Act
-      const ArticleComment = articlePage.getArticleComment(commentText);
+      const ArticleComment = articlePage.getArticleComment(newCommentData.body);
 
       // Assert
-      await expect(ArticleComment.body).toHaveText(commentText);
+      await expect(ArticleComment.body).toHaveText(newCommentData.body);
       await ArticleComment.link.click();
-      await expect(commentPage.commentBody).toHaveText(commentText);
+      await expect(commentPage.commentBody).toHaveText(newCommentData.body);
     },
   );
 });
