@@ -8,6 +8,7 @@ export class CommentPage extends BasePage {
   commentBody = this.page.getByTestId('comment-body');
   editCommentIcon = this.page.getByTestId('edit');
   returnToArticleLink = this.page.getByTestId('return');
+  alertPopup = this.page.getByTestId('alert-popup');
 
   constructor(page: Page) {
     super(page);
