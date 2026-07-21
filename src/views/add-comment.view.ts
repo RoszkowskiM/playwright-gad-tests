@@ -14,7 +14,7 @@ export class AddCommentView {
     this.saveButton = this.page.getByRole('button', { name: 'Save' });
   }
 
-  async addNewComment(commentData: addCommentModel): Promise<void> {
+  async createComment(commentData: addCommentModel): Promise<void> {
     await this.bodyInput.fill(commentData.body);
     await this.saveButton.click();
   }
