@@ -46,11 +46,11 @@ test.describe('Create, verify and delete comment', () => {
       tag: ['@GAD-R05-01', '@GAD-R05-02'],
     },
     async () => {
-      // Arrange
-      const newCommentData = prepareRandomComment();
+      let newCommentData: addCommentModel;
 
       await test.step('user can create new comment', async () => {
         // Arrange
+        newCommentData = prepareRandomComment();
         const expectedCommentCreatedAlertText = 'Comment was created';
         const expectedAddCommentViewHeader = 'Add New Comment';
 
