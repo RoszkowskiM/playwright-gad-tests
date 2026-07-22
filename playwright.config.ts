@@ -26,5 +26,13 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'iphone',
+      use: { ...devices['iPhone 12 Mini'] },
+    },
+    {
+      name: 'smoke',
+      testDir: './tests/smoke',
+    },
   ],
 });
