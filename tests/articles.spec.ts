@@ -27,7 +27,7 @@ test.describe('Verify articles', () => {
   test(
     'reject creating new article with empty title field',
     {
-      tag: ['@GAD-R04-01'],
+      tag: ['@GAD-R04-01', '@logged'],
     },
     async () => {
       // Arrange
@@ -46,7 +46,7 @@ test.describe('Verify articles', () => {
   test(
     'reject creating new article with empty body field',
     {
-      tag: ['@GAD-R04-01'],
+      tag: ['@GAD-R04-01', '@logged'],
     },
     async () => {
       // Arrange
@@ -66,7 +66,7 @@ test.describe('Verify articles', () => {
     test(
       'create new article with title with 128 signs',
       {
-        tag: ['@GAD-R04-02'],
+        tag: ['@GAD-R04-02', '@logged'],
       },
       async ({ page }) => {
         // Arrange
@@ -93,7 +93,7 @@ test.describe('Verify articles', () => {
     test(
       'reject creating new article with title exceeding 128 signs',
       {
-        tag: ['@GAD-R04-02'],
+        tag: ['@GAD-R04-02', '@logged'],
       },
       async () => {
         // Arrange
