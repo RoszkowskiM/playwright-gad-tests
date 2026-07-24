@@ -2,35 +2,29 @@ import { prepareRandomArticle } from '../../src/factories/article.factory';
 import { addArticleModel } from '../../src/models/article.model';
 import { ArticlePage } from '../../src/pages/article.page';
 import { ArticlesPage } from '../../src/pages/articles.page';
-import { LoginPage } from '../../src/pages/login.page';
-import { testUser1 } from '../../src/test-data/user.data';
 import { AddArticleView } from '../../src/views/add-article.view';
 import { expect, test } from '@playwright/test';
 
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Create, verify and delete article', () => {
-  let loginPage: LoginPage;
   let articlesPage: ArticlesPage;
   let addArticleView: AddArticleView;
   let articleData: addArticleModel;
   let articlePage: ArticlePage;
 
   test.beforeEach(async ({ page }) => {
-    loginPage = new LoginPage(page);
     articlesPage = new ArticlesPage(page);
     addArticleView = new AddArticleView(page);
     articlePage = new ArticlePage(page);
 
-    await loginPage.goto();
-    await loginPage.login(testUser1);
     await articlesPage.goto();
   });
 
   test(
     'user can create new article',
     {
-      tag: ['@GAD-R04-01'],
+      tag: ['@GAD-R04-01', '@logged'],
     },
     async () => {
       // Arrange
@@ -55,7 +49,7 @@ test.describe('Create, verify and delete article', () => {
   test(
     'user can access single article',
     {
-      tag: ['@GAD-R04-03'],
+      tag: ['@GAD-R04-03', '@logged'],
     },
     async () => {
       // Act
@@ -72,7 +66,7 @@ test.describe('Create, verify and delete article', () => {
   test(
     'user can delete his own article',
     {
-      tag: ['@GAD-R04-04'],
+      tag: ['@GAD-R04-04', '@logged'],
     },
     async () => {
       // Arrange

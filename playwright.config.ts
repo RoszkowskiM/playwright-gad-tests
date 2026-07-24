@@ -27,19 +27,21 @@ export default defineConfig({
 
   projects: [
     {
-      name: 'chromium',
+      name: 'chromium-not-logged',
       grepInvert: /@logged/,
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'setup',
       testMatch: '*.setup.ts',
+      use: { ...devices['Desktop Chrome'] },
     },
     {
-      name: 'logged',
+      name: 'chromium-logged',
       grep: /@logged/,
       dependencies: ['setup'],
       use: {
+        ...devices['Desktop Chrome'],
         storageState: STORAGE_STATE,
       },
     },
