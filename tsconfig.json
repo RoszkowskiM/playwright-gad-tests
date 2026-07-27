@@ -5,6 +5,11 @@
     "module": "CommonJS",
     "sourceMap": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node"]
+    "types": ["node"],
+    "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
+    "paths": {
+      "@_src/*": ["src/*"]
+    }
   }
 }
