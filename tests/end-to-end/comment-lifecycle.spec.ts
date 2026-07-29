@@ -4,27 +4,24 @@ import { addArticleModel } from '@_src/models/article.model';
 import { addCommentModel } from '@_src/models/comment.model';
 import { ArticlePage } from '@_src/pages/article.page';
 import { ArticlesPage } from '@_src/pages/articles.page';
-import { AddArticleView } from '@_src/views/add-article.view';
 import { EditCommentView } from '@_src/views/edit-comment.view';
 import { expect, test } from '@playwright/test';
 
 test.describe('Create, verify and delete comment', () => {
   let articlesPage: ArticlesPage;
-  let addArticleView: AddArticleView;
   let editCommentView: EditCommentView;
   let articleData: addArticleModel;
   let articlePage: ArticlePage;
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
-    addArticleView = new AddArticleView(page);
     editCommentView = new EditCommentView(page);
     articlePage = new ArticlePage(page);
 
     articleData = prepareRandomArticle();
 
     await articlesPage.goto();
-    await articlesPage.addArticleButtonLogged.click();
+    const addArticleView = await articlesPage.clickAddArticleButtonLogged();
     await addArticleView.createArticle(articleData);
   });
 
