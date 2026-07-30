@@ -13,7 +13,6 @@ test.describe('Create, verify and delete comment', () => {
 
   test.beforeEach(async ({ page }) => {
     articlesPage = new ArticlesPage(page);
-    articlePage = new ArticlePage(page);
 
     articleData = prepareRandomArticle();
 
@@ -42,7 +41,7 @@ test.describe('Create, verify and delete comment', () => {
         await expect
           .soft(addCommentView.addNewHeader)
           .toHaveText(expectedAddCommentViewHeader);
-        await addCommentView.createComment(newCommentData);
+        articlePage = await addCommentView.createComment(newCommentData);
 
         // Assert
         await expect
@@ -50,7 +49,7 @@ test.describe('Create, verify and delete comment', () => {
           .toHaveText(expectedCommentCreatedAlertText);
       });
 
-      const commentPage =
+      let commentPage =
         await test.step('user can verify new comment', async () => {
           // Act
           const articleComment = articlePage.getArticleComment(
@@ -76,7 +75,7 @@ test.describe('Create, verify and delete comment', () => {
 
         // Act
         const editCommentView = await commentPage.clickEditComment();
-        await editCommentView.updateComment(editCommentData);
+        commentPage = await editCommentView.updateComment(editCommentData);
 
         // Assert
         await expect
@@ -113,7 +112,7 @@ test.describe('Create, verify and delete comment', () => {
 
         // Act
         const addCommentView = await articlePage.clickAddCommentButton();
-        await addCommentView.createComment(newCommentData);
+        articlePage = await addCommentView.createComment(newCommentData);
 
         // Assert
         await expect
@@ -126,7 +125,7 @@ test.describe('Create, verify and delete comment', () => {
           await test.step('create comment', async () => {
             const secondCommentData = prepareRandomComment();
             const addCommentView = await articlePage.clickAddCommentButton();
-            await addCommentView.createComment(secondCommentData);
+            articlePage = await addCommentView.createComment(secondCommentData);
             return secondCommentData.body;
           });
 

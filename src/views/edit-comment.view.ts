@@ -1,4 +1,5 @@
 import { addCommentModel } from '@_src/models/comment.model';
+import { CommentPage } from '@_src/pages/comment.page';
 import { Locator, Page } from '@playwright/test';
 
 export class EditCommentView {
@@ -12,8 +13,10 @@ export class EditCommentView {
     this.cancelButton = this.page.locator('#Cancel');
   }
 
-  async updateComment(commentData: addCommentModel): Promise<void> {
+  async updateComment(commentData: addCommentModel): Promise<CommentPage> {
     await this.bodyInput.fill(commentData.body);
     await this.updateButton.click();
+
+    return new CommentPage(this.page);
   }
 }
