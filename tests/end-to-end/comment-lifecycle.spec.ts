@@ -19,7 +19,7 @@ test.describe('Create, verify and delete comment', () => {
 
     await articlesPage.goto();
     const addArticleView = await articlesPage.clickAddArticleButtonLogged();
-    await addArticleView.createArticle(articleData);
+    articlePage = await addArticleView.createArticle(articleData);
   });
 
   test(
