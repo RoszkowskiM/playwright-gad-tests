@@ -1,12 +1,18 @@
+import { Pages } from '@_src/interfaces/pages.interface';
 import { ArticlesPage } from '@_src/pages/articles.page';
 import { CommentsPage } from '@_src/pages/comments.page';
 import { test as baseTest, expect } from '@playwright/test';
 
-const test = baseTest.extend<{ articlesPage: ArticlesPage }>({
+const test = baseTest.extend<Pages>({
   articlesPage: async ({ page }, use) => {
     const articlesPage = new ArticlesPage(page);
     await articlesPage.goto();
     await use(new ArticlesPage(page));
+  },
+  commentsPage: async ({ page }, use) => {
+    const commentsPage = new CommentsPage(page);
+    await commentsPage.goto();
+    await use(new CommentsPage(page));
   },
 });
 
@@ -31,13 +37,11 @@ test.describe('Verify menu main buttons', () => {
     {
       tag: ['@GAD-R01-03'],
     },
-    async ({ page }) => {
+    async ({ commentsPage }) => {
       // Arrange
       const expectedArticlesPageTitle = 'Articles';
-      const commentsPage = new CommentsPage(page);
 
       // Act
-      await commentsPage.goto();
       const articlesPage = await commentsPage.mainMenu.clickArticlesButton();
       const title = await articlesPage.getTitle();
 
@@ -51,13 +55,11 @@ test.describe('Verify menu main buttons', () => {
     {
       tag: ['@GAD-R01-03'],
     },
-    async ({ page }) => {
+    async ({ articlesPage }) => {
       // Arrange
       const expectedHomePageTitle = 'GAD';
-      const articlesPage = new ArticlesPage(page);
 
       // Act
-      await articlesPage.goto();
       const homePage = await articlesPage.mainMenu.clickHomePageLink();
       const title = await homePage.getTitle();
 
