@@ -1,6 +1,14 @@
 import { ArticlesPage } from '@_src/pages/articles.page';
 import { CommentsPage } from '@_src/pages/comments.page';
-import { expect, test } from '@playwright/test';
+import { test as baseTest, expect } from '@playwright/test';
+
+const test = baseTest.extend<{ articlesPage: ArticlesPage }>({
+  articlesPage: async ({ page }, use) => {
+    const articlesPage = new ArticlesPage(page);
+    await articlesPage.goto();
+    await use(new ArticlesPage(page));
+  },
+});
 
 test.describe('Verify menu main buttons', () => {
   test(
@@ -8,12 +16,8 @@ test.describe('Verify menu main buttons', () => {
     {
       tag: ['@GAD-R01-03'],
     },
-    async ({ page }) => {
-      // Arrange
-      const articlesPage = new ArticlesPage(page);
-
+    async ({ articlesPage }) => {
       // Act
-      await articlesPage.goto();
       const commentsPage = await articlesPage.mainMenu.clickCommentsButton();
       const title = await commentsPage.getTitle();
 
