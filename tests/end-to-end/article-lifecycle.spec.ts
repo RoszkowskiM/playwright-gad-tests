@@ -1,34 +1,24 @@
 import { prepareRandomArticle } from '@_src/factories/article.factory';
+import { expect, test } from '@_src/fixtures/merge.fixture';
 import { addArticleModel } from '@_src/models/article.model';
-import { ArticlesPage } from '@_src/pages/articles.page';
-import { expect, test } from '@playwright/test';
 
 test.describe.configure({ mode: 'serial' });
 
 test.describe('Create, verify and delete article', () => {
-  let articlesPage: ArticlesPage;
   let articleData: addArticleModel;
-
-  test.beforeEach(async ({ page }) => {
-    articlesPage = new ArticlesPage(page);
-
-    await articlesPage.goto();
-  });
 
   test(
     'user can create new article',
     {
       tag: ['@GAD-R04-01', '@logged'],
     },
-    async () => {
+    async ({ addArticleView }) => {
       // Arrange
       const expectedText = 'Article was created';
 
       articleData = prepareRandomArticle();
 
       // Act
-      const addArticleView = await articlesPage.clickAddArticleButtonLogged();
-      await expect.soft(addArticleView.addNewHeader).toBeVisible();
       const articlePage = await addArticleView.createArticle(articleData);
 
       // Assert
@@ -45,7 +35,7 @@ test.describe('Create, verify and delete article', () => {
     {
       tag: ['@GAD-R04-03', '@logged'],
     },
-    async () => {
+    async ({ articlesPage }) => {
       // Act
       const articlePage = await articlesPage.goToArticle(articleData.title);
 
@@ -62,7 +52,7 @@ test.describe('Create, verify and delete article', () => {
     {
       tag: ['@GAD-R04-04', '@logged'],
     },
-    async () => {
+    async ({ articlesPage }) => {
       // Arrange
       const expectedNoResultText = 'No data';
       const expectedArticlesPageTitle = 'Articles';
