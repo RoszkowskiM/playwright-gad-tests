@@ -1,16 +1,12 @@
 import { PrepareRandomUser } from '@_src/factories/user.factory';
+import { expect, test } from '@_src/fixtures/merge.fixture';
 import { RegisterUserModel } from '@_src/models/user.model';
-import { RegisterPage } from '@_src/pages/register.page';
-import { expect, test } from '@playwright/test';
 
 test.describe('Verify registration', () => {
-  let registerPage: RegisterPage;
   let registerUserData: RegisterUserModel;
 
-  test.beforeEach(async ({ page }) => {
-    registerPage = new RegisterPage(page);
+  test.beforeEach(async () => {
     registerUserData = PrepareRandomUser();
-    await registerPage.goto();
   });
 
   test(
@@ -18,7 +14,7 @@ test.describe('Verify registration', () => {
     {
       tag: ['@GAD-R03-01', '@GAD-R03-02', '@GAD-R03-03'],
     },
-    async () => {
+    async ({ registerPage }) => {
       // Arrange
       const alertPopupText = 'User created';
       const expectedLoginTitle = 'Login';
@@ -50,7 +46,7 @@ test.describe('Verify registration', () => {
     {
       tag: ['@GAD-R03-04'],
     },
-    async () => {
+    async ({ registerPage }) => {
       // Arrange
       const expectedErrorText = 'Please provide a valid email address';
       registerUserData.userEmail = 'xxx';
@@ -68,7 +64,7 @@ test.describe('Verify registration', () => {
     {
       tag: ['@GAD-R03-04'],
     },
-    async () => {
+    async ({ registerPage }) => {
       // Arrange
       const expectedErrorText = 'This field is required';
 
