@@ -1,27 +1,13 @@
 import { prepareRandomArticle } from '@_src/factories/article.factory';
-import { ArticlesPage } from '@_src/pages/articles.page';
-import { AddArticleView } from '@_src/views/add-article.view';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '@_src/fixtures/merge.fixture';
 
 test.describe('Verify articles', () => {
-  let articlesPage: ArticlesPage;
-  let addArticleView: AddArticleView;
-
-  test.beforeEach(async ({ page }) => {
-    articlesPage = new ArticlesPage(page);
-
-    await articlesPage.goto();
-    addArticleView = await articlesPage.clickAddArticleButtonLogged();
-
-    await expect.soft(addArticleView.addNewHeader).toBeVisible();
-  });
-
   test(
     'reject creating new article with empty title field',
     {
       tag: ['@GAD-R04-01', '@logged'],
     },
-    async () => {
+    async ({ addArticleView }) => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
       const articleData = prepareRandomArticle();
@@ -40,7 +26,7 @@ test.describe('Verify articles', () => {
     {
       tag: ['@GAD-R04-01', '@logged'],
     },
-    async () => {
+    async ({ addArticleView }) => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
       const articleData = prepareRandomArticle();
@@ -60,7 +46,7 @@ test.describe('Verify articles', () => {
       {
         tag: ['@GAD-R04-02', '@logged'],
       },
-      async () => {
+      async ({ addArticleView }) => {
         // Arrange
         const expectedMessage = 'Article was created';
         const articleData = prepareRandomArticle(128);
@@ -86,7 +72,7 @@ test.describe('Verify articles', () => {
       {
         tag: ['@GAD-R04-02', '@logged'],
       },
-      async () => {
+      async ({ addArticleView }) => {
         // Arrange
         const expectedErrorMessage = 'Article was not created';
         const articleData = prepareRandomArticle(129);

@@ -1,5 +1,4 @@
-import { ArticlePage } from '@_src/pages/article.page';
-import { expect, test } from '@playwright/test';
+import { expect, test } from '@_src/fixtures/merge.fixture';
 
 test.describe('Verify articles', () => {
   test(
@@ -7,9 +6,8 @@ test.describe('Verify articles', () => {
     {
       tag: ['@GAD-R06-01', '@predefined_data'],
     },
-    async ({ page }) => {
+    async ({ articlePage }) => {
       // Arrange
-      const articlePage = new ArticlePage(page);
       const expectedArticleTitle = 'How to write effective test cases';
 
       // Act
