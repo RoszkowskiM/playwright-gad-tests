@@ -2,6 +2,7 @@ import { Pages } from '@_src/interfaces/pages.interface';
 import { ArticlesPage } from '@_src/pages/articles.page';
 import { CommentsPage } from '@_src/pages/comments.page';
 import { HomePage } from '@_src/pages/home.page';
+import { LoginPage } from '@_src/pages/login.page';
 import { test as baseTest } from '@playwright/test';
 
 export const pageObjectTest = baseTest.extend<Pages>({
@@ -19,5 +20,10 @@ export const pageObjectTest = baseTest.extend<Pages>({
     const homePage = new HomePage(page);
     await homePage.goto();
     await use(homePage);
+  },
+  loginPage: async ({ page }, use) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.goto();
+    await use(loginPage);
   },
 });
