@@ -1,30 +1,19 @@
-import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { prepareRandomComment } from '@_src/factories/comment.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { addArticleModel } from '@_src/models/article.model';
 import { addCommentModel } from '@_src/models/comment.model';
-import { ArticlePage } from '@_src/pages/article.page';
 
 test.describe('Create, verify and delete comment', () => {
-  let articleData: addArticleModel;
-  let articlePage: ArticlePage;
-
-  test.beforeEach(async ({ addArticleView }) => {
-    articleData = prepareRandomArticle();
-    articlePage = await addArticleView.createArticle(articleData);
-  });
-
   test(
     'operate on comments',
     {
       tag: ['@GAD-R05-01', '@GAD-R05-02', '@logged'],
     },
-    async () => {
-      let newCommentData: addCommentModel;
+    async ({ createRandomArticle }) => {
+      const newCommentData = prepareRandomComment();
+      let articlePage = createRandomArticle.articlePage;
 
       await test.step('user can create new comment', async () => {
         // Arrange
-        newCommentData = prepareRandomComment();
         const expectedAddCommentViewHeader = 'Add New Comment';
         const expectedCommentCreatedAlertText = 'Comment was created';
 
@@ -96,7 +85,9 @@ test.describe('Create, verify and delete comment', () => {
     {
       tag: ['@GAD-R05-03', '@logged'],
     },
-    async () => {
+    async ({ createRandomArticle }) => {
+      let articlePage = createRandomArticle.articlePage;
+
       await test.step('user can create first comment', async () => {
         // Arrange
         const newCommentData = prepareRandomComment();
