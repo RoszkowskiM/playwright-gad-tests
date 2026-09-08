@@ -53,7 +53,7 @@ test.describe('Verify articles', () => {
     test(
       'create new article with title with 128 signs',
       {
-        tag: ['@GAD-R04-02', '@logged'],
+        tag: ['@GAD-R04-02', '@GAD-R07-03', '@logged'],
       },
       async ({ addArticleView, page }) => {
         // Arrange
@@ -83,7 +83,7 @@ test.describe('Verify articles', () => {
     test(
       'reject creating new article with title exceeding 128 signs',
       {
-        tag: ['@GAD-R04-02', '@logged'],
+        tag: ['@GAD-R04-02', '@GAD-R07-03', '@logged'],
       },
       async ({ addArticleView, page }) => {
         // Arrange
