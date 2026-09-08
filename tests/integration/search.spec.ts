@@ -1,4 +1,5 @@
 import { expect, test } from '@_src/fixtures/merge.fixture';
+import { waitForResponse } from '@_src/utils/wait.util';
 
 test.describe('Verify search component for articles', () => {
   test(
@@ -10,11 +11,10 @@ test.describe('Verify search component for articles', () => {
       // Arrange
       const expectDefaultArticleNumber = 6;
       await expect(articlesPage.goSearchButton).toBeInViewport();
-      const responsePromise = page.waitForResponse('api/articles*');
 
       // Act
       await articlesPage.goSearchButton.click();
-      const response = await responsePromise;
+      const response = await waitForResponse(page, 'api/articles*');
       const body = await response.json();
 
       // Assert

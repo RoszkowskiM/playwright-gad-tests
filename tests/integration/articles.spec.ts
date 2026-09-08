@@ -1,12 +1,12 @@
-import { RESPONSE_TIMEOUT } from '@_pw-config';
 import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
+import { waitForResponse } from '@_src/utils/wait.util';
 
 test.describe('Verify articles', () => {
   test(
     'reject creating new article with empty title field',
     {
-      tag: ['@GAD-R04-01', '@logged'],
+      tag: ['@GAD-R04-01', '@GAD-R07-03', '@logged'],
     },
     async ({ addArticleView, page }) => {
       // Arrange
@@ -16,13 +16,9 @@ test.describe('Verify articles', () => {
       const articleData = prepareRandomArticle();
       articleData.title = '';
 
-      const responsePromise = page.waitForResponse('api/articles', {
-        timeout: RESPONSE_TIMEOUT,
-      });
-
       // Act
       await addArticleView.createArticle(articleData);
-      const response = await responsePromise;
+      const response = await waitForResponse(page, 'api/articles');
 
       // Assert
       await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
@@ -33,19 +29,23 @@ test.describe('Verify articles', () => {
   test(
     'reject creating new article with empty body field',
     {
-      tag: ['@GAD-R04-01', '@logged'],
+      tag: ['@GAD-R04-01', '@GAD-R07-03', '@logged'],
     },
-    async ({ addArticleView }) => {
+    async ({ addArticleView, page }) => {
       // Arrange
       const expectedErrorMessage = 'Article was not created';
+      const expectedResponseCode = 422;
+
       const articleData = prepareRandomArticle();
       articleData.body = '';
 
       // Act
       await addArticleView.createArticle(articleData);
+      const response = await waitForResponse(page, 'api/articles');
 
       // Assert
       await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
+      expect(response.status()).toBe(expectedResponseCode);
     },
   );
 
@@ -55,13 +55,16 @@ test.describe('Verify articles', () => {
       {
         tag: ['@GAD-R04-02', '@logged'],
       },
-      async ({ addArticleView }) => {
+      async ({ addArticleView, page }) => {
         // Arrange
         const expectedMessage = 'Article was created';
+        const expectedResponseCode = 201;
+
         const articleData = prepareRandomArticle(128);
 
         // Act
         const articlePage = await addArticleView.createArticle(articleData);
+        const response = await waitForResponse(page, 'api/articles');
 
         // Assert
         await expect
@@ -73,6 +76,7 @@ test.describe('Verify articles', () => {
         await expect
           .soft(articlePage.articleBody)
           .toHaveText(articleData.body, { useInnerText: true });
+        expect(response.status()).toBe(expectedResponseCode);
       },
     );
 
@@ -81,18 +85,22 @@ test.describe('Verify articles', () => {
       {
         tag: ['@GAD-R04-02', '@logged'],
       },
-      async ({ addArticleView }) => {
+      async ({ addArticleView, page }) => {
         // Arrange
         const expectedErrorMessage = 'Article was not created';
+        const expectedResponseCode = 422;
+
         const articleData = prepareRandomArticle(129);
 
         // Act
         await addArticleView.createArticle(articleData);
+        const response = await waitForResponse(page, 'api/articles');
 
         // Assert
         await expect(addArticleView.alertPopup).toHaveText(
           expectedErrorMessage,
         );
+        expect(response.status()).toBe(expectedResponseCode);
       },
     );
   });
