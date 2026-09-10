@@ -14,7 +14,7 @@ test.describe('Verify search component for articles', () => {
 
       // Act
       await articlesPage.goSearchButton.click();
-      const response = await waitForResponse(page, 'api/articles*');
+      const response = await waitForResponse(page, 'api/articles');
       const body = await response.json();
 
       // Assert

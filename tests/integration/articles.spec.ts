@@ -1,4 +1,3 @@
-import { RESPONSE_TIMEOUT } from '@_pw-config';
 import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
 import { waitForResponse } from '@_src/utils/wait.util';
@@ -19,7 +18,7 @@ test.describe('Verify articles', () => {
 
       // Act
       await addArticleView.createArticle(articleData);
-      const response = await waitForResponse(page, 'api/articles');
+      const response = await waitForResponse(page, 'api/articles', 'POST', 422);
 
       // Assert
       await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
@@ -117,15 +116,7 @@ test.describe('Verify articles', () => {
 
       // Act
       const articlePage = await addArticleView.createArticle(articleData);
-      const response = await page.waitForResponse(
-        (response) => {
-          return (
-            response.url().includes('/api/articles') &&
-            response.request().method() == 'GET'
-          );
-        },
-        { timeout: RESPONSE_TIMEOUT },
-      );
+      const response = await waitForResponse(page, '/api/articles', 'GET', 200);
 
       // Assert
       await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
