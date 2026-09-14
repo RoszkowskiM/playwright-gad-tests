@@ -11,10 +11,14 @@ test.describe('Verify search component for articles', () => {
       // Arrange
       const expectDefaultArticleNumber = 6;
       await expect(articlesPage.goSearchButton).toBeInViewport();
+      const waitParams = {
+        page,
+        url: '/api/articles',
+      };
 
       // Act
       await articlesPage.goSearchButton.click();
-      const response = await waitForResponse(page, 'api/articles');
+      const response = await waitForResponse(waitParams);
       const body = await response.json();
 
       // Assert

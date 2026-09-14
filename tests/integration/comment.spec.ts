@@ -18,7 +18,14 @@ test.describe('comments API', () => {
       const addCommentView = await articlePage.clickAddCommentButton();
       articlePage = await addCommentView.createComment(newCommentData);
 
-      const response = await waitForResponse(page, '/api/comments', 'GET');
+      const waitParams = {
+        page,
+        url: '/api/comments',
+        method: 'GET',
+        text: newCommentData.body,
+      };
+
+      const response = await waitForResponse(waitParams);
 
       // Assert
       await expect

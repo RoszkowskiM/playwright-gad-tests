@@ -18,7 +18,12 @@ test.describe('Verify articles', () => {
 
       // Act
       await addArticleView.createArticle(articleData);
-      const response = await waitForResponse(page, 'api/articles', 'POST', 422);
+      const response = await waitForResponse({
+        page,
+        url: 'api/articles',
+        method: 'POST',
+        status: 422,
+      });
 
       // Assert
       await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
@@ -41,7 +46,7 @@ test.describe('Verify articles', () => {
 
       // Act
       await addArticleView.createArticle(articleData);
-      const response = await waitForResponse(page, 'api/articles');
+      const response = await waitForResponse({ page, url: 'api/articles' });
 
       // Assert
       await expect(addArticleView.alertPopup).toHaveText(expectedErrorMessage);
@@ -64,7 +69,7 @@ test.describe('Verify articles', () => {
 
         // Act
         const articlePage = await addArticleView.createArticle(articleData);
-        const response = await waitForResponse(page, 'api/articles');
+        const response = await waitForResponse({ page, url: 'api/articles' });
 
         // Assert
         await expect
@@ -94,7 +99,7 @@ test.describe('Verify articles', () => {
 
         // Act
         await addArticleView.createArticle(articleData);
-        const response = await waitForResponse(page, 'api/articles');
+        const response = await waitForResponse({ page, url: 'api/articles' });
 
         // Assert
         await expect(addArticleView.alertPopup).toHaveText(
@@ -116,7 +121,12 @@ test.describe('Verify articles', () => {
 
       // Act
       const articlePage = await addArticleView.createArticle(articleData);
-      const response = await waitForResponse(page, '/api/articles', 'GET', 200);
+      const response = await waitForResponse({
+        page,
+        url: '/api/articles',
+        method: 'GET',
+        status: 200,
+      });
 
       // Assert
       await expect.soft(articlePage.articleTitle).toHaveText(articleData.title);
