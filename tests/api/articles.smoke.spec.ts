@@ -17,5 +17,26 @@ test.describe(
       // Assert
       expect(response.status()).toBe(expectedStatusCode);
     });
+
+    test(
+      'GET articles returns at least one article',
+      {
+        tag: ['@predefined_data'],
+      },
+      async ({ request }) => {
+        // Arrange
+        const expectedMinArticlesCount = 1;
+        const articlesUrl = '/api/articles';
+
+        // Act
+        const response = await request.get(articlesUrl);
+        const responseJson = await response.json();
+
+        // Assert
+        expect(responseJson.length).toBeGreaterThanOrEqual(
+          expectedMinArticlesCount,
+        );
+      },
+    );
   },
 );
