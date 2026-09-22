@@ -5,7 +5,7 @@ import { testUser1 } from '@_src/test-data/user.data';
 test.describe(
   'Verify articles CRUD operations',
   {
-    tag: ['@GAD-R09-01', '@api'],
+    tag: ['@GAD-R09-01', '@CRUD'],
   },
   () => {
     test('should not create an article without a logged-in user', async ({
