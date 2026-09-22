@@ -73,7 +73,7 @@ test.describe(
       const actualResponseStatus = response.status();
       expect(
         actualResponseStatus,
-        `status code expected ${expectedStatusCode}, but received ${actualResponseStatus}`,
+        `expected status code: ${expectedStatusCode}, received: ${actualResponseStatus}`,
       ).toBe(expectedStatusCode);
 
       const article = await response.json();
