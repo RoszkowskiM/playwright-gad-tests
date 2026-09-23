@@ -1,5 +1,6 @@
 import { expect, test } from '@_src/fixtures/merge.fixture';
 import {
+  apiLinks,
   getAuthHeader,
   prepareArticlePayload,
   prepareCommentPayload,
@@ -18,10 +19,9 @@ test.describe(
       headers = await getAuthHeader(request);
 
       // Create article
-      const articlesUrl = '/api/articles';
       const articleData = prepareArticlePayload();
 
-      const response = await request.post(articlesUrl, {
+      const response = await request.post(apiLinks.articlesUrl, {
         headers,
         data: articleData,
       });
@@ -35,11 +35,10 @@ test.describe(
     }) => {
       // Arrange
       const expectedStatusCode = 401;
-      const commentsUrl = '/api/comments';
       const commentData = prepareCommentPayload(articleId);
 
       // Act
-      const response = await request.post(commentsUrl, {
+      const response = await request.post(apiLinks.commentsUrl, {
         data: commentData,
       });
 
@@ -52,11 +51,10 @@ test.describe(
     }) => {
       // Arrange
       const expectedStatusCode = 201;
-      const commentsUrl = '/api/comments';
       const commentData = prepareCommentPayload(articleId);
 
       // Act
-      const response = await request.post(commentsUrl, {
+      const response = await request.post(apiLinks.commentsUrl, {
         headers,
         data: commentData,
       });
