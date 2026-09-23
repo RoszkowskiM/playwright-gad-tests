@@ -1,3 +1,4 @@
+import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { testUser1 } from '@_src/test-data/user.data';
 import { APIRequestContext } from '@playwright/test';
 
@@ -22,4 +23,22 @@ export async function getAuthHeader(
   return {
     Authorization: `Bearer ${responseLoginJson.access_token}`,
   };
+}
+
+interface articlePayload {
+  title: string;
+  body: string;
+  date: string;
+  image: string;
+}
+
+export function prepareArticlePayload(): articlePayload {
+  const randomArticleData = prepareRandomArticle();
+  const articleData = {
+    title: randomArticleData.title,
+    body: randomArticleData.body,
+    date: '2026-09-16T07:18:47.823Z',
+    image: '.\\data\\images\\256\\andrew-svk-nQvFebPtqbw-unsplash.jpg',
+  };
+  return articleData;
 }

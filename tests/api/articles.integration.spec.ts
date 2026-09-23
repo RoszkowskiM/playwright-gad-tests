@@ -1,6 +1,6 @@
 import { prepareRandomArticle } from '@_src/factories/article.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { getAuthHeader } from '@_src/utils/api.util';
+import { getAuthHeader, prepareArticlePayload } from '@_src/utils/api.util';
 
 test.describe(
   'Verify articles CRUD operations',
@@ -38,17 +38,10 @@ test.describe(
       // Arrange
       const expectedStatusCode = 201;
       const headers = await getAuthHeader(request);
+      const articleData = prepareArticlePayload();
 
       // Act
       const articlesUrl = '/api/articles';
-
-      const randomArticleData = prepareRandomArticle();
-      const articleData = {
-        title: randomArticleData.title,
-        body: randomArticleData.body,
-        date: '2026-09-16T07:18:47.823Z',
-        image: '.\\data\\images\\256\\andrew-svk-nQvFebPtqbw-unsplash.jpg',
-      };
 
       const response = await request.post(articlesUrl, {
         headers,
