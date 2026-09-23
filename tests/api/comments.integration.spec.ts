@@ -1,6 +1,9 @@
-import { prepareRandomComment } from '@_src/factories/comment.factory';
 import { expect, test } from '@_src/fixtures/merge.fixture';
-import { getAuthHeader, prepareArticlePayload } from '@_src/utils/api.util';
+import {
+  getAuthHeader,
+  prepareArticlePayload,
+  prepareCommentPayload,
+} from '@_src/utils/api.util';
 
 test.describe(
   'Verify comments CRUD operations',
@@ -33,13 +36,7 @@ test.describe(
       // Arrange
       const expectedStatusCode = 401;
       const commentsUrl = '/api/comments';
-
-      const randomCommentData = prepareRandomComment();
-      const commentData = {
-        article_id: articleId,
-        body: randomCommentData.body,
-        date: '2026-09-16T07:18:47.823Z',
-      };
+      const commentData = prepareCommentPayload(articleId);
 
       // Act
       const response = await request.post(commentsUrl, {
@@ -55,15 +52,8 @@ test.describe(
     }) => {
       // Arrange
       const expectedStatusCode = 201;
-
       const commentsUrl = '/api/comments';
-
-      const randomCommentData = prepareRandomComment();
-      const commentData = {
-        article_id: articleId,
-        body: randomCommentData.body,
-        date: '2026-09-16T07:18:47.823Z',
-      };
+      const commentData = prepareCommentPayload(articleId);
 
       // Act
       const response = await request.post(commentsUrl, {
