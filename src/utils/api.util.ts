@@ -3,24 +3,37 @@ import { prepareRandomComment } from '@_src/factories/comment.factory';
 import { testUser1 } from '@_src/test-data/user.data';
 import { APIRequestContext } from '@playwright/test';
 
+export interface ArticlePayload {
+  title: string;
+  body: string;
+  date: string;
+  image: string;
+}
+
+interface CommentPayload {
+  article_id: number;
+  body: string;
+  date: string;
+}
+export interface Headers {
+  [key: string]: string;
+}
+
 export const apiLinks = {
+  loginUrl: '/api/login',
   articlesUrl: '/api/articles',
   commentsUrl: '/api/comments',
 };
-interface Headers {
-  [key: string]: string;
-}
 
 export async function getAuthHeader(
   request: APIRequestContext,
 ): Promise<Headers> {
-  const loginUrl = '/api/login';
   const userData = {
     email: testUser1.userEmail,
     password: testUser1.userPassword,
   };
 
-  const responseLogin = await request.post(loginUrl, {
+  const responseLogin = await request.post(apiLinks.loginUrl, {
     data: userData,
   });
   const responseLoginJson = await responseLogin.json();
@@ -28,13 +41,6 @@ export async function getAuthHeader(
   return {
     Authorization: `Bearer ${responseLoginJson.access_token}`,
   };
-}
-
-interface ArticlePayload {
-  title: string;
-  body: string;
-  date: string;
-  image: string;
 }
 
 export function prepareArticlePayload(): ArticlePayload {
@@ -48,13 +54,7 @@ export function prepareArticlePayload(): ArticlePayload {
   return articleData;
 }
 
-interface commentPayload {
-  article_id: number;
-  body: string;
-  date: string;
-}
-
-export function prepareCommentPayload(articleId: number): commentPayload {
+export function prepareCommentPayload(articleId: number): CommentPayload {
   const randomCommentData = prepareRandomComment();
   const commentData = {
     article_id: articleId,

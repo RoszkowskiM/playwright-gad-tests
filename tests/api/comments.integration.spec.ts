@@ -9,7 +9,7 @@ import {
 test.describe(
   'Verify comments CRUD operations',
   {
-    tag: ['@GAD-R09-02', '@CRUD'],
+    tag: ['@GAD-R09-04', '@CRUD'],
   },
   () => {
     let articleId: number;
