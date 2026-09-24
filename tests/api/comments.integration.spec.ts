@@ -9,7 +9,7 @@ import {
 test.describe(
   'Verify comments CRUD operations',
   {
-    tag: ['@GAD-R09-04', '@CRUD'],
+    tag: ['@CRUD'],
   },
   () => {
     let articleId: number;
@@ -30,44 +30,52 @@ test.describe(
       articleId = article.id;
     });
 
-    test('should not create a comment without a logged-in user', async ({
-      request,
-    }) => {
-      // Arrange
-      const expectedStatusCode = 401;
-      const commentData = prepareCommentPayload(articleId);
+    test(
+      'should not create a comment without a logged-in user',
+      {
+        tag: ['@GAD-R09-02'],
+      },
+      async ({ request }) => {
+        // Arrange
+        const expectedStatusCode = 401;
+        const commentData = prepareCommentPayload(articleId);
 
-      // Act
-      const response = await request.post(apiLinks.commentsUrl, {
-        data: commentData,
-      });
+        // Act
+        const response = await request.post(apiLinks.commentsUrl, {
+          data: commentData,
+        });
 
-      // Assert
-      expect(response.status()).toBe(expectedStatusCode);
-    });
+        // Assert
+        expect(response.status()).toBe(expectedStatusCode);
+      },
+    );
 
-    test('should create a comment with a logged-in user', async ({
-      request,
-    }) => {
-      // Arrange
-      const expectedStatusCode = 201;
-      const commentData = prepareCommentPayload(articleId);
+    test(
+      'should create a comment with a logged-in user',
+      {
+        tag: ['@GAD-R09-02'],
+      },
+      async ({ request }) => {
+        // Arrange
+        const expectedStatusCode = 201;
+        const commentData = prepareCommentPayload(articleId);
 
-      // Act
-      const response = await request.post(apiLinks.commentsUrl, {
-        headers,
-        data: commentData,
-      });
+        // Act
+        const response = await request.post(apiLinks.commentsUrl, {
+          headers,
+          data: commentData,
+        });
 
-      // Assert
-      const actualResponseStatus = response.status();
-      expect(
-        actualResponseStatus,
-        `expected status code: ${expectedStatusCode}, received: ${actualResponseStatus}`,
-      ).toBe(expectedStatusCode);
+        // Assert
+        const actualResponseStatus = response.status();
+        expect(
+          actualResponseStatus,
+          `expected status code: ${expectedStatusCode}, received: ${actualResponseStatus}`,
+        ).toBe(expectedStatusCode);
 
-      const comment = await response.json();
-      expect.soft(comment.body).toEqual(commentData.body);
-    });
+        const comment = await response.json();
+        expect.soft(comment.body).toEqual(commentData.body);
+      },
+    );
   },
 );
