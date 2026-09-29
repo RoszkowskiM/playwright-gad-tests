@@ -55,6 +55,20 @@ test.describe(
             headers,
             data: articleData,
           });
+
+          // Assert article exist
+          const articleJson = await responseArticle.json();
+          const expectedStatusCode = 200;
+
+          await expect(async () => {
+            const responseArticleCreated = await request.get(
+              `${apiLinks.articlesUrl}/${articleJson.id}`,
+            );
+            expect(
+              responseArticleCreated.status(),
+              `Expected status: ${expectedStatusCode}, observed: ${responseArticleCreated.status()}`,
+            ).toBe(expectedStatusCode);
+          }).toPass({ timeout: 2_000 });
         });
 
         test(
@@ -87,8 +101,6 @@ test.describe(
             tag: ['@GAD-R09-03'],
           },
           async ({ request }) => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-
             // Arrange
             const expectedStatusCodeDelete = 200;
             const expectedStatusCodeGet = 404;
@@ -129,8 +141,6 @@ test.describe(
             tag: ['@GAD-R09-03'],
           },
           async ({ request }) => {
-            // await new Promise((resolve) => setTimeout(resolve, 1000));
-
             // Arrange
             const expectedStatusCodeDelete = 401;
             const expectedStatusCodeGet = 200;

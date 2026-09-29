@@ -108,8 +108,6 @@ test.describe(
             tag: ['@GAD-R09-04'],
           },
           async ({ request }) => {
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-
             // Arrange
             const expectedStatusCodeDelete = 200;
             const expectedStatusCodeGet = 404;
@@ -148,8 +146,6 @@ test.describe(
             tag: ['@GAD-R09-04'],
           },
           async ({ request }) => {
-            // await new Promise((resolve) => setTimeout(resolve, 1000));
-
             // Arrange
             const expectedStatusCodeDelete = 401;
             const expectedStatusCodeGet = 200;
