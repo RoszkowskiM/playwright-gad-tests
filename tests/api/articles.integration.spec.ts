@@ -14,6 +14,8 @@ test.describe(
     tag: ['@CRUD'],
   },
   () => {
+    //--------------------------------POST--------------------------------//
+
     test('should not create an article without a logged-in user', async ({
       request,
     }) => {
@@ -76,6 +78,8 @@ test.describe(
             expect.soft(articleJson.body).toEqual(articleData.body);
           },
         );
+
+        //--------------------------------DELETE--------------------------------//
 
         test(
           'should delete an article with a logged-in user',
