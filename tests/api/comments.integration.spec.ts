@@ -74,8 +74,21 @@ test.describe(
             data: commentData,
           });
 
-          const comment = await responseComment.json();
-          commentId = comment.id;
+          const commentJson = await responseComment.json();
+          commentId = commentJson.id;
+
+          // Assert comment exist
+          const expectedStatusCode = 200;
+
+          await expect(async () => {
+            const responseCommentCreated = await request.get(
+              `${apiLinks.commentsUrl}/${commentJson.id}`,
+            );
+            expect(
+              responseCommentCreated.status(),
+              `Expected status: ${expectedStatusCode}, observed: ${responseCommentCreated.status()}`,
+            ).toBe(expectedStatusCode);
+          }).toPass({ timeout: 3_000 });
         });
         //--------------------------------POST--------------------------------//
 
