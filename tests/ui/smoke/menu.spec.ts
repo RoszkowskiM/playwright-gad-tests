@@ -1,4 +1,4 @@
-import { expect, test } from '@_src/fixtures/merge.fixture';
+import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 
 test.describe('Verify menu main buttons', () => {
   test(

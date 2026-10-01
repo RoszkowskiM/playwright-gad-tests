@@ -1,4 +1,4 @@
-import { expect, test } from '@_src/fixtures/merge.fixture';
+import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { apiLinks } from '@_src/utils/api.util';
 
 test.describe(

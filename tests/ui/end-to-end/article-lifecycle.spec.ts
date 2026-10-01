@@ -1,5 +1,5 @@
-import { expect, test } from '@_src/fixtures/merge.fixture';
-import { addArticleModel } from '@_src/models/article.model';
+import { expect, test } from '@_src/ui/fixtures/merge.fixture';
+import { addArticleModel } from '@_src/ui/models/article.model';
 
 test.describe.configure({ mode: 'serial' });
 

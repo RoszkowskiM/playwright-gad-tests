@@ -1,10 +1,10 @@
-import { Pages } from '@_src/interfaces/pages.interface';
-import { ArticlePage } from '@_src/pages/article.page';
-import { ArticlesPage } from '@_src/pages/articles.page';
-import { CommentsPage } from '@_src/pages/comments.page';
-import { HomePage } from '@_src/pages/home.page';
-import { LoginPage } from '@_src/pages/login.page';
-import { RegisterPage } from '@_src/pages/register.page';
+import { Pages } from '@_src/ui/interfaces/pages.interface';
+import { ArticlePage } from '@_src/ui/pages/article.page';
+import { ArticlesPage } from '@_src/ui/pages/articles.page';
+import { CommentsPage } from '@_src/ui/pages/comments.page';
+import { HomePage } from '@_src/ui/pages/home.page';
+import { LoginPage } from '@_src/ui/pages/login.page';
+import { RegisterPage } from '@_src/ui/pages/register.page';
 import { test as baseTest } from '@playwright/test';
 
 export const pageObjectTest = baseTest.extend<Pages>({
