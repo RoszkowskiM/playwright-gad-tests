@@ -6,7 +6,7 @@ import {
   getAuthHeader,
   prepareArticlePayload,
   prepareCommentPayload,
-} from '@_src/utils/api.util';
+} from '@_src/ui/utils/api.util';
 import { APIResponse } from '@playwright/test';
 
 test.describe(

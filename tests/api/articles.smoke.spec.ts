@@ -1,5 +1,5 @@
 import { expect, test } from '@_src/ui/fixtures/merge.fixture';
-import { apiLinks } from '@_src/utils/api.util';
+import { apiLinks } from '@_src/ui/utils/api.util';
 
 test.describe(
   'Verify articles API endpoint',
