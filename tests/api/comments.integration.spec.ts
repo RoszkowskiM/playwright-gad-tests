@@ -1,11 +1,7 @@
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
+import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
-import {
-  CommentPayload,
-  Headers,
-  apiLinks,
-  getAuthHeader,
-} from '@_src/api/utils/api.util';
+import { CommentPayload, Headers, apiLinks } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { APIResponse } from '@playwright/test';
 
