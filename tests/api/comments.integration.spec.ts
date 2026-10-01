@@ -1,7 +1,9 @@
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
-import { CommentPayload, Headers, apiLinks } from '@_src/api/utils/api.util';
+import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
+import { Headers } from '@_src/api/models/header.api.model';
+import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { APIResponse } from '@playwright/test';
 
@@ -22,7 +24,7 @@ test.describe(
       // Create article
       const articleData = prepareArticlePayload();
 
-      const responseArticle = await request.post(apiLinks.articlesUrl, {
+      const responseArticle = await request.post(apiUrls.articlesUrl, {
         headers,
         data: articleData,
       });
@@ -42,7 +44,7 @@ test.describe(
         const commentData = prepareCommentPayload(articleId);
 
         // Act
-        const responseComment = await request.post(apiLinks.commentsUrl, {
+        const responseComment = await request.post(apiUrls.commentsUrl, {
           data: commentData,
         });
 
@@ -65,7 +67,7 @@ test.describe(
           commentData = prepareCommentPayload(articleId);
 
           // Act
-          responseComment = await request.post(apiLinks.commentsUrl, {
+          responseComment = await request.post(apiUrls.commentsUrl, {
             headers,
             data: commentData,
           });
@@ -78,7 +80,7 @@ test.describe(
 
           await expect(async () => {
             const responseCommentCreated = await request.get(
-              `${apiLinks.commentsUrl}/${commentJson.id}`,
+              `${apiUrls.commentsUrl}/${commentJson.id}`,
             );
             expect(
               responseCommentCreated.status(),
@@ -123,14 +125,14 @@ test.describe(
 
             // Act
             const responseCommentDelete = await request.delete(
-              `${apiLinks.commentsUrl}/${commentId}`,
+              `${apiUrls.commentsUrl}/${commentId}`,
               {
                 headers,
               },
             );
 
             const responseCommentGet = await request.get(
-              `${apiLinks.commentsUrl}/${commentId}`,
+              `${apiUrls.commentsUrl}/${commentId}`,
             );
 
             // Assert DELETE
@@ -161,11 +163,11 @@ test.describe(
 
             // Act
             const responseCommentDelete = await request.delete(
-              `${apiLinks.commentsUrl}/${commentId}`,
+              `${apiUrls.commentsUrl}/${commentId}`,
             );
 
             const responseCommentGet = await request.get(
-              `${apiLinks.commentsUrl}/${commentId}`,
+              `${apiUrls.commentsUrl}/${commentId}`,
             );
 
             // Assert DELETE

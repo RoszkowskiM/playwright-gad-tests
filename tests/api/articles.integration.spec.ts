@@ -1,6 +1,8 @@
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
-import { ArticlePayload, Headers, apiLinks } from '@_src/api/utils/api.util';
+import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
+import { Headers } from '@_src/api/models/header.api.model';
+import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { APIResponse } from '@playwright/test';
 
@@ -20,7 +22,7 @@ test.describe(
       const articleData = prepareArticlePayload();
 
       // Act
-      const response = await request.post(apiLinks.articlesUrl, {
+      const response = await request.post(apiUrls.articlesUrl, {
         data: articleData,
       });
 
@@ -47,7 +49,7 @@ test.describe(
           articleData = prepareArticlePayload();
 
           // Act
-          responseArticle = await request.post(apiLinks.articlesUrl, {
+          responseArticle = await request.post(apiUrls.articlesUrl, {
             headers,
             data: articleData,
           });
@@ -58,7 +60,7 @@ test.describe(
 
           await expect(async () => {
             const responseArticleCreated = await request.get(
-              `${apiLinks.articlesUrl}/${articleJson.id}`,
+              `${apiUrls.articlesUrl}/${articleJson.id}`,
             );
             expect(
               responseArticleCreated.status(),
@@ -105,14 +107,14 @@ test.describe(
 
             // Act
             const responseArticleDelete = await request.delete(
-              `${apiLinks.articlesUrl}/${articleId}`,
+              `${apiUrls.articlesUrl}/${articleId}`,
               {
                 headers,
               },
             );
 
             const responseArticleGet = await request.get(
-              `${apiLinks.articlesUrl}/${articleId}`,
+              `${apiUrls.articlesUrl}/${articleId}`,
             );
 
             // Assert DELETE
@@ -145,11 +147,11 @@ test.describe(
 
             // Act
             const responseArticleDelete = await request.delete(
-              `${apiLinks.articlesUrl}/${articleId}`,
+              `${apiUrls.articlesUrl}/${articleId}`,
             );
 
             const responseArticleGet = await request.get(
-              `${apiLinks.articlesUrl}/${articleId}`,
+              `${apiUrls.articlesUrl}/${articleId}`,
             );
 
             // Assert DELETE
