@@ -1,4 +1,3 @@
-import { prepareRandomComment } from '@_src/ui/factories/comment.factory';
 import { testUser1 } from '@_src/ui/test-data/user.data';
 import { APIRequestContext } from '@playwright/test';
 
@@ -40,14 +39,4 @@ export async function getAuthHeader(
   return {
     Authorization: `Bearer ${responseLoginJson.access_token}`,
   };
-}
-
-export function prepareCommentPayload(articleId: number): CommentPayload {
-  const randomCommentData = prepareRandomComment();
-  const commentData = {
-    article_id: articleId,
-    body: randomCommentData.body,
-    date: '2026-09-16T07:18:47.823Z',
-  };
-  return commentData;
 }
