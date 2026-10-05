@@ -1,4 +1,4 @@
-import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
+import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
@@ -22,12 +22,7 @@ test.describe(
       headers = await getAuthHeader(request);
 
       // Create article
-      const articleData = prepareArticlePayload();
-
-      const responseArticle = await request.post(apiUrls.articlesUrl, {
-        headers,
-        data: articleData,
-      });
+      const responseArticle = await createArticleWithApi(request, headers);
 
       const article = await responseArticle.json();
       articleId = article.id;
