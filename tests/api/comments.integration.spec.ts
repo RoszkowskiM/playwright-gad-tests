@@ -1,5 +1,6 @@
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
+import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
@@ -58,31 +59,17 @@ test.describe(
         let commentData: CommentPayload;
 
         test.beforeEach('create a comment', async ({ request }) => {
-          // Arrange
           commentData = prepareCommentPayload(articleId);
-
-          // Act
-          responseComment = await request.post(apiUrls.commentsUrl, {
+          responseComment = await createCommentWithApi(
+            request,
             headers,
-            data: commentData,
-          });
-
+            articleId,
+            commentData,
+          );
           const commentJson = await responseComment.json();
           commentId = commentJson.id;
-
-          // Assert comment exist
-          const expectedStatusCode = 200;
-
-          await expect(async () => {
-            const responseCommentCreated = await request.get(
-              `${apiUrls.commentsUrl}/${commentJson.id}`,
-            );
-            expect(
-              responseCommentCreated.status(),
-              `Expected status: ${expectedStatusCode}, observed: ${responseCommentCreated.status()}`,
-            ).toBe(expectedStatusCode);
-          }).toPass({ timeout: 3_000 });
         });
+
         //--------------------------------POST--------------------------------//
 
         test(
