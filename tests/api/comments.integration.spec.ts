@@ -1,3 +1,8 @@
+/* eslint-disable playwright/expect-expect */
+import {
+  expectDeleteResponseStatus,
+  expectGetResponseStatus,
+} from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
@@ -105,31 +110,20 @@ test.describe(
             const expectedStatusCodeDelete = 200;
             const expectedStatusCodeGet = 404;
 
-            // Act
-            const responseCommentDelete = await request.delete(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                headers,
-              },
-            );
-
-            const responseCommentGet = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
-
             // Assert DELETE
-            const actualDeleteResponseStatus = responseCommentDelete.status();
-            expect(
-              actualDeleteResponseStatus,
-              `expected status code: ${expectedStatusCodeDelete}, received: ${actualDeleteResponseStatus}`,
-            ).toBe(expectedStatusCodeDelete);
+            await expectDeleteResponseStatus(
+              request,
+              `${apiUrls.commentsUrl}/${commentId}`,
+              expectedStatusCodeDelete,
+              headers,
+            );
 
             // Assert GET
-            const actualGetResponseStatus = responseCommentGet.status();
-            expect(
-              actualGetResponseStatus,
-              `expected status code: ${expectedStatusCodeGet}, received: ${actualGetResponseStatus}`,
-            ).toBe(expectedStatusCodeGet);
+            await expectGetResponseStatus(
+              request,
+              `${apiUrls.commentsUrl}/${commentId}`,
+              expectedStatusCodeGet,
+            );
           },
         );
 
@@ -143,29 +137,19 @@ test.describe(
             const expectedStatusCodeDelete = 401;
             const expectedStatusCodeGet = 200;
 
-            // Act
-            const responseCommentDelete = await request.delete(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
-
-            const responseCommentGet = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
-
             // Assert DELETE
-            const actualNotDeletedResponseStatus =
-              responseCommentDelete.status();
-            expect(
-              actualNotDeletedResponseStatus,
-              `expected status code: ${expectedStatusCodeDelete}, received: ${actualNotDeletedResponseStatus}`,
-            ).toBe(expectedStatusCodeDelete);
+            await expectDeleteResponseStatus(
+              request,
+              `${apiUrls.commentsUrl}/${commentId}`,
+              expectedStatusCodeDelete,
+            );
 
             // Assert GET
-            const actualGetResponseStatus = responseCommentGet.status();
-            expect(
-              actualGetResponseStatus,
-              `expected status code: ${expectedStatusCodeGet}, received: ${actualGetResponseStatus}`,
-            ).toBe(expectedStatusCodeGet);
+            await expectGetResponseStatus(
+              request,
+              `${apiUrls.commentsUrl}/${commentId}`,
+              expectedStatusCodeGet,
+            );
           },
         );
       },

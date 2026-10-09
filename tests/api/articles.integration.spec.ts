@@ -1,3 +1,8 @@
+/* eslint-disable playwright/expect-expect */
+import {
+  expectDeleteResponseStatus,
+  expectGetResponseStatus,
+} from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
@@ -90,31 +95,20 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
 
-            // Act
-            const responseArticleDelete = await request.delete(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                headers,
-              },
-            );
-
-            const responseArticleGet = await request.get(
-              `${apiUrls.articlesUrl}/${articleId}`,
-            );
-
             // Assert DELETE
-            const actualDeleteResponseStatus = responseArticleDelete.status();
-            expect(
-              actualDeleteResponseStatus,
-              `expected status code: ${expectedStatusCodeDelete}, received: ${actualDeleteResponseStatus}`,
-            ).toBe(expectedStatusCodeDelete);
+            await expectDeleteResponseStatus(
+              request,
+              `${apiUrls.articlesUrl}/${articleId}`,
+              expectedStatusCodeDelete,
+              headers,
+            );
 
             // Assert GET
-            const actualGetResponseStatus = responseArticleGet.status();
-            expect(
-              actualGetResponseStatus,
-              `expected status code: ${expectedStatusCodeGet}, received: ${actualGetResponseStatus}`,
-            ).toBe(expectedStatusCodeGet);
+            await expectGetResponseStatus(
+              request,
+              `${apiUrls.articlesUrl}/${articleId}`,
+              expectedStatusCodeGet,
+            );
           },
         );
 
@@ -130,29 +124,19 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
 
-            // Act
-            const responseArticleDelete = await request.delete(
-              `${apiUrls.articlesUrl}/${articleId}`,
-            );
-
-            const responseArticleGet = await request.get(
-              `${apiUrls.articlesUrl}/${articleId}`,
-            );
-
             // Assert DELETE
-            const actualNotDeletedResponseStatus =
-              responseArticleDelete.status();
-            expect(
-              actualNotDeletedResponseStatus,
-              `expected status code: ${expectedStatusCodeDelete}, received: ${actualNotDeletedResponseStatus}`,
-            ).toBe(expectedStatusCodeDelete);
+            await expectDeleteResponseStatus(
+              request,
+              `${apiUrls.articlesUrl}/${articleId}`,
+              expectedStatusCodeDelete,
+            );
 
             // Assert GET
-            const actualGetResponseStatus = responseArticleGet.status();
-            expect(
-              actualGetResponseStatus,
-              `expected status code: ${expectedStatusCodeGet}, received: ${actualGetResponseStatus}`,
-            ).toBe(expectedStatusCodeGet);
+            await expectGetResponseStatus(
+              request,
+              `${apiUrls.articlesUrl}/${articleId}`,
+              expectedStatusCodeGet,
+            );
           },
         );
       },
