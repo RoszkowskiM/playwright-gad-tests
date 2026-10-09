@@ -1,4 +1,3 @@
-/* eslint-disable playwright/expect-expect */
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
