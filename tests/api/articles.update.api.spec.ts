@@ -8,7 +8,7 @@ import { test } from '@_src/ui/fixtures/merge.fixture';
 import { APIResponse, expect } from '@playwright/test';
 
 test.describe(
-  'Verify articles modify operations',
+  'Verify articles MODIFY operations',
   {
     tag: ['@CRUD', '@articles', '@PUT'],
   },

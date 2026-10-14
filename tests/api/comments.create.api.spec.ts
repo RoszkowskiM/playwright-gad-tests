@@ -75,5 +75,42 @@ test.describe(
         expect.soft(comment.body).toEqual(commentData.body);
       },
     );
+
+    test(
+      'should create new comment with a logged-in user when modified comment id does not exist',
+      {
+        tag: ['@GAD-R10-02'],
+      },
+      async ({ request }) => {
+        // Arrange
+        const expectedStatusCodePut = 201;
+        const commentData = prepareCommentPayload(articleId);
+
+        // Act
+        const responseCommentPut = await request.put(
+          `${apiUrls.commentsUrl}/${new Date().valueOf()}`,
+          {
+            headers,
+            data: commentData,
+          },
+        );
+
+        // Assert PUT
+        const actualResponseStatus = responseCommentPut.status();
+        expect(
+          actualResponseStatus,
+          `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+        ).toBe(expectedStatusCodePut);
+
+        // Assert GET
+        const commentPutJson = await responseCommentPut.json();
+        const responseCommentGet = await request.get(
+          `${apiUrls.commentsUrl}/${commentPutJson.id}`,
+        );
+
+        const commentGetJson = await responseCommentGet.json();
+        expect.soft(commentGetJson.body).toEqual(commentData.body);
+      },
+    );
   },
 );
