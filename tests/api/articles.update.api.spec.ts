@@ -10,7 +10,7 @@ import { APIResponse, expect } from '@playwright/test';
 test.describe(
   'Verify articles MODIFY operations',
   {
-    tag: ['@CRUD', '@articles', '@PUT'],
+    tag: ['@CRUD', '@articles', '@UPDATE'],
   },
   () => {
     let articleData: ArticlePayload;
@@ -30,84 +30,233 @@ test.describe(
       );
     });
 
-    test(
-      'should modify and replace content for an article with a logged-in user',
+    test.describe(
+      'fully modify article',
       {
-        tag: ['@GAD-R10-01'],
+        tag: ['@PUT'],
       },
-      async ({ request }) => {
-        // Arrange
-        const expectedStatusCodePut = 200;
-        const articleJson = await responseArticle.json();
-        const articleId = articleJson.id;
-        const modifiedArticleData = prepareArticlePayload();
-
-        // Act
-        const responseArticlePut = await request.put(
-          `${apiUrls.articlesUrl}/${articleId}`,
+      () => {
+        test(
+          'should modify and replace content for an article with a logged-in user',
           {
-            headers,
-            data: modifiedArticleData,
+            tag: ['@GAD-R10-01'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 200;
+            const articleJson = await responseArticle.json();
+            const articleId = articleJson.id;
+            const modifiedArticleData = prepareArticlePayload();
+
+            // Act
+            const responseArticlePut = await request.put(
+              `${apiUrls.articlesUrl}/${articleId}`,
+              {
+                headers,
+                data: modifiedArticleData,
+              },
+            );
+            // Assert PUT
+            const actualResponseStatus = responseArticlePut.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            const modifiedArticleJson = await responseArticlePut.json();
+            expect
+              .soft(modifiedArticleJson.title)
+              .toEqual(modifiedArticleData.title);
+            expect
+              .soft(modifiedArticleJson.body)
+              .toEqual(modifiedArticleData.body);
+            expect
+              .soft(modifiedArticleJson.title)
+              .not.toEqual(articleData.title);
+            expect.soft(modifiedArticleJson.body).not.toEqual(articleData.body);
           },
         );
-        // Assert PUT
-        const actualResponseStatus = responseArticlePut.status();
-        expect(
-          actualResponseStatus,
-          `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
-        ).toBe(expectedStatusCodePut);
 
-        const modifiedArticleJson = await responseArticlePut.json();
-        expect
-          .soft(modifiedArticleJson.title)
-          .toEqual(modifiedArticleData.title);
-        expect.soft(modifiedArticleJson.body).toEqual(modifiedArticleData.body);
-        expect.soft(modifiedArticleJson.title).not.toEqual(articleData.title);
-        expect.soft(modifiedArticleJson.body).not.toEqual(articleData.body);
+        test(
+          'should not modify an article with a non logged-in user',
+          {
+            tag: ['@GAD-R10-01'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 401;
+            const articleJson = await responseArticle.json();
+            const articleId = articleJson.id;
+            const modifiedArticleData = prepareArticlePayload();
+
+            // Act
+            const responseArticlePut = await request.put(
+              `${apiUrls.articlesUrl}/${articleId}`,
+              {
+                data: modifiedArticleData,
+              },
+            );
+
+            // Assert PUT
+            const actualResponseStatus = responseArticlePut.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            // Assert GET
+            const nonModifiedArticle = await request.get(
+              `${apiUrls.articlesUrl}/${articleId}`,
+            );
+
+            const nonModifiedArticleJson = await nonModifiedArticle.json();
+
+            expect
+              .soft(nonModifiedArticleJson.title)
+              .not.toEqual(modifiedArticleData.title);
+            expect
+              .soft(nonModifiedArticleJson.body)
+              .not.toEqual(modifiedArticleData.body);
+            expect
+              .soft(nonModifiedArticleJson.title)
+              .toEqual(articleData.title);
+            expect.soft(nonModifiedArticleJson.body).toEqual(articleData.body);
+          },
+        );
       },
     );
 
-    test(
-      'should not modify an article with a non logged-in user',
+    test.describe(
+      'partially modify article',
       {
-        tag: ['@GAD-R10-01'],
+        tag: ['@PATCH'],
       },
-      async ({ request }) => {
-        // Arrange
-        const expectedStatusCodePut = 401;
-        const articleJson = await responseArticle.json();
-        const articleId = articleJson.id;
-        const modifiedArticleData = prepareArticlePayload();
-
-        // Act
-        const responseArticlePut = await request.put(
-          `${apiUrls.articlesUrl}/${articleId}`,
+      () => {
+        test(
+          'should partially update content for an article with a logged-in user',
           {
-            data: modifiedArticleData,
+            tag: ['@GAD-R10-03'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePatch = 200;
+            const articleJson = await responseArticle.json();
+            const articleId = articleJson.id;
+            const modifiedArticleData = {
+              title: `Patched title ${new Date().toISOString()}`,
+            };
+
+            // Act
+            const responseArticlePatch = await request.patch(
+              `${apiUrls.articlesUrl}/${articleId}`,
+              {
+                headers,
+                data: modifiedArticleData,
+              },
+            );
+            // Assert PATCH
+            const actualResponseStatus = responseArticlePatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePatch}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePatch);
+
+            const modifiedArticleJson = await responseArticlePatch.json();
+            expect
+              .soft(modifiedArticleJson.title)
+              .toEqual(modifiedArticleData.title);
+            expect
+              .soft(modifiedArticleJson.title)
+              .not.toEqual(articleData.title);
+            expect.soft(modifiedArticleJson.body).toEqual(articleData.body);
           },
         );
 
-        // Assert PUT
-        const actualResponseStatus = responseArticlePut.status();
-        expect(
-          actualResponseStatus,
-          `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
-        ).toBe(expectedStatusCodePut);
+        test(
+          'should not partially modify an article with a non logged-in user',
+          {
+            tag: ['@GAD-R10-01'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePatch = 401;
+            const articleJson = await responseArticle.json();
+            const articleId = articleJson.id;
+            const modifiedArticleData = {
+              title: `Patched title ${new Date().toISOString()}`,
+            };
 
-        const nonModifiedArticle = await request.get(
-          `${apiUrls.articlesUrl}/${articleId}`,
+            // Act
+            const responseArticlePatch = await request.patch(
+              `${apiUrls.articlesUrl}/${articleId}`,
+              {
+                data: modifiedArticleData,
+              },
+            );
+
+            // Assert PATCH
+            const actualResponseStatus = responseArticlePatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePatch}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePatch);
+
+            // Assert GET
+            const nonModifiedArticle = await request.get(
+              `${apiUrls.articlesUrl}/${articleId}`,
+            );
+
+            const nonModifiedArticleJson = await nonModifiedArticle.json();
+
+            expect
+              .soft(nonModifiedArticleJson.title)
+              .not.toEqual(modifiedArticleData.title);
+            expect
+              .soft(nonModifiedArticleJson.title)
+              .toEqual(articleData.title);
+            expect.soft(nonModifiedArticleJson.body).toEqual(articleData.body);
+          },
         );
 
-        const nonModifiedArticleJson = await nonModifiedArticle.json();
+        test(
+          'should not partially modify an article with improper field with a logged-in user',
+          {
+            tag: ['@GAD-R10-01'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePatch = 422;
+            const articleJson = await responseArticle.json();
+            const articleId = articleJson.id;
+            const nonExistingField = `nonExistingField`;
+            const expectedErrorMessage = `One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: "${nonExistingField}" not in [id,user_id,title,body,date,image]`;
 
-        expect
-          .soft(nonModifiedArticleJson.title)
-          .not.toEqual(modifiedArticleData.title);
-        expect
-          .soft(nonModifiedArticleJson.body)
-          .not.toEqual(modifiedArticleData.body);
-        expect.soft(nonModifiedArticleJson.title).toEqual(articleData.title);
-        expect.soft(nonModifiedArticleJson.body).toEqual(articleData.body);
+            const modifiedArticleData: Record<string, string> = {};
+            modifiedArticleData[nonExistingField] = 'Hello';
+
+            // Act
+            const responseArticlePatch = await request.patch(
+              `${apiUrls.articlesUrl}/${articleId}`,
+              {
+                headers,
+                data: modifiedArticleData,
+              },
+            );
+
+            // Assert PATCH
+            const actualResponseStatus = responseArticlePatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePatch}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePatch);
+
+            const responseJson = await responseArticlePatch.json();
+
+            expect
+              .soft(responseJson.error.message)
+              .toEqual(expectedErrorMessage);
+          },
+        );
       },
     );
   },

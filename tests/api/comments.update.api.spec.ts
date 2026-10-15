@@ -10,7 +10,7 @@ import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 test.describe(
   'Verify comments UPDATE operations',
   {
-    tag: ['@CRUD', '@comments', '@PUT'],
+    tag: ['@CRUD', '@comments', '@UPDATE'],
   },
   () => {
     let articleId: number;
