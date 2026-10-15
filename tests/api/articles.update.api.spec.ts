@@ -229,7 +229,9 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
             const nonExistingField = `nonExistingField`;
-            const expectedErrorMessage = `One of field is invalid (empty, invalid or too long) or there are some additional fields: Field validation: "${nonExistingField}" not in [id,user_id,title,body,date,image]`;
+            const expectedErrorMessage =
+              `One of field is invalid (empty, invalid or too long) or there are some additional fields:` +
+              ` Field validation: "${nonExistingField}" not in [id,user_id,title,body,date,image]`;
 
             const modifiedArticleData: Record<string, string> = {};
             modifiedArticleData[nonExistingField] = 'Hello';
