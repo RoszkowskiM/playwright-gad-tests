@@ -143,7 +143,7 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
             const modifiedArticleData = {
-              title: `Patched title ${new Date().toISOString()}`,
+              title: `Patched article title ${new Date().toISOString()}`,
             };
 
             // Act
@@ -175,7 +175,7 @@ test.describe(
         test(
           'should not partially modify an article with a non logged-in user',
           {
-            tag: ['@GAD-R10-01'],
+            tag: ['@GAD-R10-03'],
           },
           async ({ request }) => {
             // Arrange
@@ -183,7 +183,7 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
             const modifiedArticleData = {
-              title: `Patched title ${new Date().toISOString()}`,
+              title: `Patched article title ${new Date().toISOString()}`,
             };
 
             // Act
@@ -221,7 +221,7 @@ test.describe(
         test(
           'should not partially modify an article with improper field with a logged-in user',
           {
-            tag: ['@GAD-R10-01'],
+            tag: ['@GAD-R10-03'],
           },
           async ({ request }) => {
             // Arrange
@@ -229,6 +229,7 @@ test.describe(
             const articleJson = await responseArticle.json();
             const articleId = articleJson.id;
             const nonExistingField = `nonExistingField`;
+
             const expectedErrorMessage =
               `One of field is invalid (empty, invalid or too long) or there are some additional fields:` +
               ` Field validation: "${nonExistingField}" not in [id,user_id,title,body,date,image]`;

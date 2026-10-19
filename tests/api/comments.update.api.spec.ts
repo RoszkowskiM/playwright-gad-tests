@@ -41,78 +41,221 @@ test.describe(
       commentId = commentJson.id;
     });
 
-    test(
-      'should modify and replace content for a comment fon a logged-in user',
+    test.describe(
+      'fully modify comment',
       {
-        tag: ['@GAD-R10-02'],
+        tag: ['@PUT'],
       },
-      async ({ request }) => {
-        // Arrange
-        const expectedStatusCodePut = 200;
-        const modifiedCommentData = prepareCommentPayload(articleId);
-
-        // Act
-        const responseCommentPut = await request.put(
-          `${apiUrls.commentsUrl}/${commentId}`,
+      () => {
+        test(
+          'should modify and replace content for a comment fon a logged-in user',
           {
-            headers,
-            data: modifiedCommentData,
+            tag: ['@GAD-R10-02'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 200;
+            const modifiedCommentData = prepareCommentPayload(articleId);
+
+            // Act
+            const responseCommentPut = await request.put(
+              `${apiUrls.commentsUrl}/${commentId}`,
+              {
+                headers,
+                data: modifiedCommentData,
+              },
+            );
+
+            // Assert PUT
+            const actualResponseStatus = responseCommentPut.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            // Assert GET
+            const modifiedCommentGet = await request.get(
+              `${apiUrls.commentsUrl}/${commentId}`,
+            );
+
+            const modifiedCommentJson = await modifiedCommentGet.json();
+            expect
+              .soft(modifiedCommentJson.body)
+              .toEqual(modifiedCommentData.body);
+            expect.soft(modifiedCommentJson.body).not.toEqual(commentData.body);
           },
         );
 
-        // Assert PUT
-        const actualResponseStatus = responseCommentPut.status();
-        expect(
-          actualResponseStatus,
-          `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
-        ).toBe(expectedStatusCodePut);
+        test(
+          'should not modify a comment with a non logged-in user',
+          {
+            tag: ['@GAD-R10-02'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 401;
+            const modifiedCommentData = prepareCommentPayload(articleId);
 
-        // Assert GET
-        const modifiedCommentGet = await request.get(
-          `${apiUrls.commentsUrl}/${commentId}`,
+            // Act
+            const responseCommentPut = await request.put(
+              `${apiUrls.commentsUrl}/${commentId}`,
+              {
+                data: modifiedCommentData,
+              },
+            );
+
+            // Assert PUT
+            const actualResponseStatus = responseCommentPut.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            // Assert GET
+            const nonModifiedComment = await request.get(
+              `${apiUrls.commentsUrl}/${commentId}`,
+            );
+
+            const nonModifiedCommentJson = await nonModifiedComment.json();
+            expect
+              .soft(nonModifiedCommentJson.body)
+              .not.toEqual(modifiedCommentData.body);
+            expect.soft(nonModifiedCommentJson.body).toEqual(commentData.body);
+          },
         );
-
-        const modifiedCommentJson = await modifiedCommentGet.json();
-        expect.soft(modifiedCommentJson.body).toEqual(modifiedCommentData.body);
-        expect.soft(modifiedCommentJson.body).not.toEqual(commentData.body);
       },
     );
 
-    test(
-      'should not modify a comment with a non logged-in user',
+    test.describe(
+      'partially modify comment',
       {
-        tag: ['@GAD-R10-02'],
+        tag: ['@PATCH'],
       },
-      async ({ request }) => {
-        // Arrange
-        const expectedStatusCodePut = 401;
-        const modifiedCommentData = prepareCommentPayload(articleId);
-
-        // Act
-        const responseCommentPut = await request.put(
-          `${apiUrls.commentsUrl}/${commentId}`,
+      () => {
+        test(
+          'should partially update content for a comment with a logged-in user',
           {
-            data: modifiedCommentData,
+            tag: ['@GAD-R10-04'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePatch = 200;
+            const modifiedCommentData = {
+              body: `Patched comment body ${new Date().toISOString()}`,
+            };
+
+            // Act
+            const responseCommentPatch = await request.patch(
+              `${apiUrls.commentsUrl}/${commentId}`,
+              {
+                headers,
+                data: modifiedCommentData,
+              },
+            );
+
+            // Assert PATCH
+            const actualResponseStatus = responseCommentPatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePatch}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePatch);
+
+            // Assert GET
+            const modifiedCommentGet = await request.get(
+              `${apiUrls.commentsUrl}/${commentId}`,
+            );
+
+            const modifiedCommentJson = await modifiedCommentGet.json();
+
+            expect
+              .soft(modifiedCommentJson.body)
+              .toEqual(modifiedCommentData.body);
+
+            expect.soft(modifiedCommentJson.date).toEqual(commentData.date);
           },
         );
 
-        // Assert PUT
-        const actualResponseStatus = responseCommentPut.status();
-        expect(
-          actualResponseStatus,
-          `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
-        ).toBe(expectedStatusCodePut);
+        test(
+          'should not partially modify a comment with a non logged-in user',
+          {
+            tag: ['@GAD-R10-04'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 401;
+            const modifiedCommentData = {
+              body: `Patched comment body ${new Date().toISOString()}`,
+            };
 
-        // Assert GET
-        const nonModifiedComment = await request.get(
-          `${apiUrls.commentsUrl}/${commentId}`,
+            // Act
+            const responseCommentPatch = await request.patch(
+              `${apiUrls.commentsUrl}/${commentId}`,
+              {
+                data: modifiedCommentData,
+              },
+            );
+
+            // Assert PATCH
+            const actualResponseStatus = responseCommentPatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            // Assert GET
+            const nonModifiedComment = await request.get(
+              `${apiUrls.commentsUrl}/${commentId}`,
+            );
+
+            const nonModifiedCommentJson = await nonModifiedComment.json();
+
+            expect
+              .soft(nonModifiedCommentJson.body)
+              .not.toEqual(modifiedCommentData.body);
+
+            expect.soft(nonModifiedCommentJson.body).toEqual(commentData.body);
+          },
         );
 
-        const nonModifiedCommentJson = await nonModifiedComment.json();
-        expect
-          .soft(nonModifiedCommentJson.body)
-          .not.toEqual(modifiedCommentData.body);
-        expect.soft(nonModifiedCommentJson.body).toEqual(commentData.body);
+        test(
+          'should not partially modify a comment with improper field with a logged-in user',
+          {
+            tag: ['@GAD-R10-04'],
+          },
+          async ({ request }) => {
+            // Arrange
+            const expectedStatusCodePut = 422;
+            const nonExistingField = `nonExistingField`;
+
+            const expectedErrorMessage =
+              `One of field is invalid (empty, invalid or too long) or there are some additional fields:` +
+              ` Field validation: "${nonExistingField}" not in [id,user_id,article_id,body,date]`;
+
+            const modifiedCommentData: Record<string, string> = {};
+            modifiedCommentData[nonExistingField] = 'Hello';
+
+            // Act
+            const responseCommentPatch = await request.patch(
+              `${apiUrls.commentsUrl}/${commentId}`,
+              {
+                headers,
+                data: modifiedCommentData,
+              },
+            );
+
+            // Assert PUT
+            const actualResponseStatus = responseCommentPatch.status();
+            expect(
+              actualResponseStatus,
+              `expected status code: ${expectedStatusCodePut}, received: ${actualResponseStatus}`,
+            ).toBe(expectedStatusCodePut);
+
+            const responseJson = await responseCommentPatch.json();
+            expect
+              .soft(responseJson.error.message)
+              .toEqual(expectedErrorMessage);
+          },
+        );
       },
     );
   },
