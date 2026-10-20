@@ -1,5 +1,5 @@
+import { expect, test } from '@_src/merge.fixture';
 import { PrepareRandomUser } from '@_src/ui/factories/user.factory';
-import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { RegisterUserModel } from '@_src/ui/models/user.model';
 
 test.describe('Verify registration', () => {

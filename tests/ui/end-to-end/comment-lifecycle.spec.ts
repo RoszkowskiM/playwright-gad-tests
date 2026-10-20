@@ -1,5 +1,5 @@
+import { expect, test } from '@_src/merge.fixture';
 import { prepareRandomComment } from '@_src/ui/factories/comment.factory';
-import { expect, test } from '@_src/ui/fixtures/merge.fixture';
 import { addCommentModel } from '@_src/ui/models/comment.model';
 
 test.describe('Create, verify and delete comment', () => {

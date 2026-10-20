@@ -1,5 +1,5 @@
 import { STORAGE_STATE } from '@_pw-config';
-import { expect, test as setup } from '@_src/ui/fixtures/merge.fixture';
+import { expect, test as setup } from '@_src/merge.fixture';
 import { testUser1 } from '@_src/ui/test-data/user.data';
 
 setup('login and save session', async ({ loginPage, page }) => {

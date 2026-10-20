@@ -8,7 +8,7 @@ import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareAndCreateCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
-import { test } from '@_src/ui/fixtures/merge.fixture';
+import { test } from '@_src/merge.fixture';
 
 test.describe(
   'Verify comments DELETE operations',

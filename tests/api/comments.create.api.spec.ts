@@ -4,7 +4,7 @@ import { createCommentWithApi } from '@_src/api/factories/comment-create.api.fac
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
-import { expect, test } from '@_src/ui/fixtures/merge.fixture';
+import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
   'Verify comments CREATE operations',

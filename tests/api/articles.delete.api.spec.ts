@@ -9,7 +9,7 @@ import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
-import { test } from '@_src/ui/fixtures/merge.fixture';
+import { test } from '@_src/merge.fixture';
 import { APIResponse } from '@playwright/test';
 
 test.describe(

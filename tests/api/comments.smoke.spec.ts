@@ -1,5 +1,5 @@
 import { apiUrls } from '@_src/api/utils/api.util';
-import { expect, test } from '@_src/ui/fixtures/merge.fixture';
+import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
   'Verify comments API endpoint',

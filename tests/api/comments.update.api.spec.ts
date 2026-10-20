@@ -5,7 +5,7 @@ import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.f
 import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
-import { expect, test } from '@_src/ui/fixtures/merge.fixture';
+import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
   'Verify comments UPDATE operations',
