@@ -34,7 +34,6 @@ test.describe(
       const responseComment = await createCommentWithApi(
         request,
         headers,
-        articleId,
         commentData,
       );
       const commentJson = await responseComment.json();

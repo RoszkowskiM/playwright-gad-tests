@@ -5,7 +5,7 @@ import {
 } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
-import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
+import { prepareAndCreateCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
 import { test } from '@_src/ui/fixtures/merge.fixture';
@@ -32,7 +32,7 @@ test.describe(
     });
 
     test.beforeEach('create a comment', async ({ request }) => {
-      const responseComment = await createCommentWithApi(
+      const responseComment = await prepareAndCreateCommentWithApi(
         request,
         headers,
         articleId,

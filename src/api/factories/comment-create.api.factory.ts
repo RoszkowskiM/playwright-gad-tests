@@ -5,16 +5,24 @@ import { apiUrls } from '@_src/api/utils/api.util';
 import { expect } from '@_src/ui/fixtures/merge.fixture';
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
-export async function createCommentWithApi(
+export async function prepareAndCreateCommentWithApi(
   request: APIRequestContext,
   headers: Headers,
   articleId: number,
-  commentData?: CommentPayload,
 ): Promise<APIResponse> {
-  const commentDataFinal = commentData || prepareCommentPayload(articleId);
+  const commentData = prepareCommentPayload(articleId);
+
+  return await createCommentWithApi(request, headers, commentData);
+}
+
+export async function createCommentWithApi(
+  request: APIRequestContext,
+  headers: Headers,
+  commentData: CommentPayload,
+): Promise<APIResponse> {
   const responseComment = await request.post(apiUrls.commentsUrl, {
     headers,
-    data: commentDataFinal,
+    data: commentData,
   });
 
   const commentJson = await responseComment.json();
