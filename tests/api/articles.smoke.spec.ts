@@ -1,4 +1,3 @@
-import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -8,12 +7,14 @@ test.describe(
   },
   () => {
     test.describe('Verify each condition in separate test', () => {
-      test('GET articles returns status code 200', async ({ request }) => {
+      test('GET articles returns status code 200', async ({
+        articlesRequest,
+      }) => {
         // Arrange
         const expectedStatusCode = 200;
 
         // Act
-        const response = await request.get(apiUrls.articlesUrl);
+        const response = await articlesRequest.get();
 
         // Assert
         expect(response.status()).toBe(expectedStatusCode);
@@ -24,12 +25,12 @@ test.describe(
         {
           tag: ['@predefined_data'],
         },
-        async ({ request }) => {
+        async ({ articlesRequest }) => {
           // Arrange
           const expectedMinArticlesCount = 1;
 
           // Act
-          const response = await request.get(apiUrls.articlesUrl);
+          const response = await articlesRequest.get();
           const responseJson = await response.json();
 
           // Assert
@@ -44,7 +45,7 @@ test.describe(
         {
           tag: ['@predefined_data'],
         },
-        async ({ request }) => {
+        async ({ articlesRequest }) => {
           // Arrange
           const expectedRequiredFields = [
             'id',
@@ -56,7 +57,7 @@ test.describe(
           ];
 
           // Act
-          const response = await request.get(apiUrls.articlesUrl);
+          const response = await articlesRequest.get();
           const responseJson = await response.json();
           const article = responseJson[0];
 
@@ -73,9 +74,9 @@ test.describe(
       {
         tag: ['@predefined_data'],
       },
-      async ({ request }) => {
+      async ({ articlesRequest }) => {
         // Arrange
-        const response = await request.get(apiUrls.articlesUrl);
+        const response = await articlesRequest.get();
         const responseJson = await response.json();
 
         await test.step('GET articles returns status code 200', async () => {
