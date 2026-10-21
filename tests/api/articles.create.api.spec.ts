@@ -12,16 +12,14 @@ test.describe(
   },
   () => {
     test('should not create an article without a logged-in user', async ({
-      request,
+      articlesRequest,
     }) => {
       // Arrange
       const expectedStatusCode = 401;
       const articleData = prepareArticlePayload();
 
       // Act
-      const response = await request.post(apiUrls.articlesUrl, {
-        data: articleData,
-      });
+      const response = await articlesRequest.post(articleData);
 
       // Assert
       expect(response.status()).toBe(expectedStatusCode);
