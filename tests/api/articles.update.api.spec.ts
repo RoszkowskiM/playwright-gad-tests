@@ -82,7 +82,7 @@ test.describe(
           {
             tag: ['@GAD-R10-01'],
           },
-          async ({ request }) => {
+          async ({ request, articlesRequest }) => {
             // Arrange
             const expectedStatusCodePut = 401;
             const articleJson = await responseArticle.json();
@@ -105,9 +105,8 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedArticle = await request.get(
-              `${apiUrls.articlesUrl}/${articleId}`,
-            );
+            const nonModifiedArticle =
+              await articlesRequest.getOneArticle(articleId);
 
             const nonModifiedArticleJson = await nonModifiedArticle.json();
 
@@ -177,7 +176,7 @@ test.describe(
           {
             tag: ['@GAD-R10-03'],
           },
-          async ({ request }) => {
+          async ({ request, articlesRequest }) => {
             // Arrange
             const expectedStatusCodePatch = 401;
             const articleJson = await responseArticle.json();
@@ -202,9 +201,8 @@ test.describe(
             ).toBe(expectedStatusCodePatch);
 
             // Assert GET
-            const nonModifiedArticle = await request.get(
-              `${apiUrls.articlesUrl}/${articleId}`,
-            );
+            const nonModifiedArticle =
+              await articlesRequest.getOneArticle(articleId);
 
             const nonModifiedArticleJson = await nonModifiedArticle.json();
 
