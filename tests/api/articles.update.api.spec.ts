@@ -21,14 +21,16 @@ test.describe(
       headers = await getAuthHeader(request);
     });
 
-    test.beforeEach('create an article', async ({ request }) => {
-      articleData = prepareArticlePayload();
-      responseArticle = await createArticleWithApi(
-        request,
-        headers,
-        articleData,
-      );
-    });
+    test.beforeEach(
+      'create an article',
+      async ({ articlesRequestLoggedIn }) => {
+        articleData = prepareArticlePayload();
+        responseArticle = await createArticleWithApi(
+          articlesRequestLoggedIn,
+          articleData,
+        );
+      },
+    );
 
     test.describe(
       'fully modify article',

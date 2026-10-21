@@ -39,15 +39,14 @@ test.describe(
         {
           tag: ['@GAD-R09-01'],
         },
-        async ({ request }) => {
+        async ({ articlesRequestLoggedIn }) => {
           // Arrange
           const expectedStatusCode = 201;
 
           // Act
           const articleData = prepareArticlePayload();
           const responseArticle = await createArticleWithApi(
-            request,
-            headers,
+            articlesRequestLoggedIn,
             articleData,
           );
 

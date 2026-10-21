@@ -20,16 +20,21 @@ test.describe(
     let commentId: number;
     let headers: Headers;
 
-    test.beforeAll('create an article', async ({ request }) => {
-      // User login
-      headers = await getAuthHeader(request);
+    test.beforeAll(
+      'create an article',
+      async ({ request, articlesRequestLoggedIn }) => {
+        // User login
+        headers = await getAuthHeader(request);
 
-      // Create article
-      const responseArticle = await createArticleWithApi(request, headers);
+        // Create article
+        const responseArticle = await createArticleWithApi(
+          articlesRequestLoggedIn,
+        );
 
-      const article = await responseArticle.json();
-      articleId = article.id;
-    });
+        const article = await responseArticle.json();
+        articleId = article.id;
+      },
+    );
 
     test.beforeEach('create a comment', async ({ request }) => {
       const responseComment = await prepareAndCreateCommentWithApi(

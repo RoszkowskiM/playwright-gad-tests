@@ -26,14 +26,16 @@ test.describe(
       headers = await getAuthHeader(request);
     });
 
-    test.beforeEach('create an article', async ({ request }) => {
-      articleData = prepareArticlePayload();
-      responseArticle = await createArticleWithApi(
-        request,
-        headers,
-        articleData,
-      );
-    });
+    test.beforeEach(
+      'create an article',
+      async ({ articlesRequestLoggedIn }) => {
+        articleData = prepareArticlePayload();
+        responseArticle = await createArticleWithApi(
+          articlesRequestLoggedIn,
+          articleData,
+        );
+      },
+    );
 
     test(
       'should delete an article with a logged-in user',
