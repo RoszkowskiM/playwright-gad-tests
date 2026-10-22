@@ -1,9 +1,6 @@
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
-import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
-import { Headers } from '@_src/api/models/header.api.model';
-import { apiUrls } from '@_src/api/utils/api.util';
 import { test } from '@_src/merge.fixture';
 import { APIResponse, expect } from '@playwright/test';
 
@@ -14,12 +11,7 @@ test.describe(
   },
   () => {
     let articleData: ArticlePayload;
-    let headers: Headers;
     let responseArticle: APIResponse;
-
-    test.beforeAll('user login', async ({ request }) => {
-      headers = await getAuthHeader(request);
-    });
 
     test.beforeEach(
       'create an article',
@@ -133,7 +125,7 @@ test.describe(
           {
             tag: ['@GAD-R10-03'],
           },
-          async ({ request }) => {
+          async ({ articlesRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePatch = 200;
             const articleJson = await responseArticle.json();
@@ -143,12 +135,9 @@ test.describe(
             };
 
             // Act
-            const responseArticlePatch = await request.patch(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                headers,
-                data: modifiedArticleData,
-              },
+            const responseArticlePatch = await articlesRequestLoggedIn.patch(
+              articleId,
+              modifiedArticleData,
             );
             // Assert PATCH
             const actualResponseStatus = responseArticlePatch.status();
@@ -173,7 +162,7 @@ test.describe(
           {
             tag: ['@GAD-R10-03'],
           },
-          async ({ request, articlesRequest }) => {
+          async ({ articlesRequest }) => {
             // Arrange
             const expectedStatusCodePatch = 401;
             const articleJson = await responseArticle.json();
@@ -183,11 +172,9 @@ test.describe(
             };
 
             // Act
-            const responseArticlePatch = await request.patch(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                data: modifiedArticleData,
-              },
+            const responseArticlePatch = await articlesRequest.patch(
+              articleId,
+              modifiedArticleData,
             );
 
             // Assert PATCH
@@ -218,7 +205,7 @@ test.describe(
           {
             tag: ['@GAD-R10-03'],
           },
-          async ({ request }) => {
+          async ({ articlesRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePatch = 422;
             const articleJson = await responseArticle.json();
@@ -233,12 +220,9 @@ test.describe(
             modifiedArticleData[nonExistingField] = 'Hello';
 
             // Act
-            const responseArticlePatch = await request.patch(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                headers,
-                data: modifiedArticleData,
-              },
+            const responseArticlePatch = await articlesRequestLoggedIn.patch(
+              articleId,
+              modifiedArticleData,
             );
 
             // Assert PATCH

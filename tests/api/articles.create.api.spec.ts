@@ -23,12 +23,6 @@ test.describe(
     });
 
     test.describe('CREATE operations', () => {
-      // let headers: Headers;
-
-      // test.beforeAll('user login', async ({ request }) => {
-      //   headers = await getAuthHeader(request);
-      // });
-
       test(
         'should create an article with a logged-in user',
         {
