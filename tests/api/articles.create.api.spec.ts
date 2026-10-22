@@ -70,7 +70,9 @@ test.describe(
 
           // Act
           const responseArticlePut =
-            await articlesRequestLoggedIn.putWithNonExistingArticleId(articleData);
+            await articlesRequestLoggedIn.putWithNonExistingArticleId(
+              articleData,
+            );
 
           // Assert PUT
           const actualResponseStatus = responseArticlePut.status();
