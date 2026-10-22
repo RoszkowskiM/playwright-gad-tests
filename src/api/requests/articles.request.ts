@@ -1,7 +1,6 @@
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
-import { apiUrls } from '@_src/api/utils/api.util';
-import { timestamp } from '@_src/ui/utils/wait.util';
+import { apiUrls, timestamp } from '@_src/api/utils/api.util';
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
 export class ArticlesRequest {

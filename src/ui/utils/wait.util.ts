@@ -32,7 +32,3 @@ export async function waitForResponse(
     },
   );
 }
-
-export async function timestamp(): Promise<number> {
-  return new Date().valueOf();
-}

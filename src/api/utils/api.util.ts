@@ -3,3 +3,7 @@ export const apiUrls = {
   articlesUrl: '/api/articles',
   commentsUrl: '/api/comments',
 };
+
+export async function timestamp(): Promise<number> {
+  return new Date().valueOf();
+}
