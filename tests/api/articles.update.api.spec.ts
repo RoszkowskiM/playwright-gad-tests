@@ -43,7 +43,7 @@ test.describe(
           {
             tag: ['@GAD-R10-01'],
           },
-          async ({ request }) => {
+          async ({ articlesRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePut = 200;
             const articleJson = await responseArticle.json();
@@ -51,12 +51,9 @@ test.describe(
             const modifiedArticleData = prepareArticlePayload();
 
             // Act
-            const responseArticlePut = await request.put(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                headers,
-                data: modifiedArticleData,
-              },
+            const responseArticlePut = await articlesRequestLoggedIn.put(
+              articleId,
+              modifiedArticleData,
             );
             // Assert PUT
             const actualResponseStatus = responseArticlePut.status();
@@ -84,7 +81,7 @@ test.describe(
           {
             tag: ['@GAD-R10-01'],
           },
-          async ({ request, articlesRequest }) => {
+          async ({ articlesRequest }) => {
             // Arrange
             const expectedStatusCodePut = 401;
             const articleJson = await responseArticle.json();
@@ -92,11 +89,9 @@ test.describe(
             const modifiedArticleData = prepareArticlePayload();
 
             // Act
-            const responseArticlePut = await request.put(
-              `${apiUrls.articlesUrl}/${articleId}`,
-              {
-                data: modifiedArticleData,
-              },
+            const responseArticlePut = await articlesRequest.put(
+              articleId,
+              modifiedArticleData,
             );
 
             // Assert PUT

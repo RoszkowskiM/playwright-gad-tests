@@ -1,6 +1,7 @@
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
+import { timestamp } from '@_src/ui/utils/wait.util';
 import { APIRequestContext, APIResponse } from '@playwright/test';
 
 export class ArticlesRequest {
@@ -17,8 +18,26 @@ export class ArticlesRequest {
   async getOneArticle(articleId: string): Promise<APIResponse> {
     return await this.request.get(`${this.url}/${articleId}`);
   }
+
   async post(data: ArticlePayload): Promise<APIResponse> {
     return await this.request.post(this.url, {
+      headers: this.headers,
+      data,
+    });
+  }
+
+  async put(articleId: string, data: ArticlePayload): Promise<APIResponse> {
+    return await this.request.put(`${this.url}/${articleId}`, {
+      headers: this.headers,
+      data,
+    });
+  }
+
+  async putWithNonExistingArticleId(
+    data: ArticlePayload,
+  ): Promise<APIResponse> {
+    const timeStamp = await timestamp();
+    return await this.request.put(`${this.url}/${timeStamp}`, {
       headers: this.headers,
       data,
     });
