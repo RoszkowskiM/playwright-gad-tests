@@ -11,11 +11,15 @@ export class ArticlesRequest {
   ) {}
 
   async get(): Promise<APIResponse> {
-    return await this.request.get(this.url);
+    return await this.request.get(this.url, {
+      headers: this.headers,
+    });
   }
 
   async getOneArticle(articleId: string): Promise<APIResponse> {
-    return await this.request.get(`${this.url}/${articleId}`);
+    return await this.request.get(`${this.url}/${articleId}`, {
+      headers: this.headers,
+    });
   }
 
   async post(data: ArticlePayload): Promise<APIResponse> {
@@ -49,6 +53,12 @@ export class ArticlesRequest {
     return await this.request.patch(`${this.url}/${articleId}`, {
       headers: this.headers,
       data,
+    });
+  }
+
+  async delete(articleId: string): Promise<APIResponse> {
+    return await this.request.delete(`${this.url}/${articleId}`, {
+      headers: this.headers,
     });
   }
 }

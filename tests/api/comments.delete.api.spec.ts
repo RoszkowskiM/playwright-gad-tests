@@ -1,14 +1,10 @@
-/* eslint-disable playwright/expect-expect */
-import {
-  expectDeleteResponseStatus,
-  expectGetResponseStatus,
-} from '@_src/api/assertions/assertions.api';
+import { expectGetResponseStatus } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareAndCreateCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
-import { test } from '@_src/merge.fixture';
+import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
   'Verify comments DELETE operations',
@@ -56,13 +52,18 @@ test.describe(
         const expectedStatusCodeDelete = 200;
         const expectedStatusCodeGet = 404;
 
-        // Assert DELETE
-        await expectDeleteResponseStatus(
-          request,
+        // Act
+        const responseCommentDelete = await request.delete(
           `${apiUrls.commentsUrl}/${commentId}`,
-          expectedStatusCodeDelete,
-          headers,
+          { headers },
         );
+
+        // Assert DELETE
+        const actualResponseStatusDelete = responseCommentDelete.status();
+        expect(
+          actualResponseStatusDelete,
+          `expected status code: ${expectedStatusCodeDelete}, received: ${actualResponseStatusDelete}`,
+        ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
         await expectGetResponseStatus(
@@ -84,11 +85,16 @@ test.describe(
         const expectedStatusCodeGet = 200;
 
         // Assert DELETE
-        await expectDeleteResponseStatus(
-          request,
+        const responseCommentDelete = await request.delete(
           `${apiUrls.commentsUrl}/${commentId}`,
-          expectedStatusCodeDelete,
         );
+
+        // Assert DELETE
+        const actualResponseStatusDelete = responseCommentDelete.status();
+        expect(
+          actualResponseStatusDelete,
+          `expected status code: ${expectedStatusCodeDelete}, received: ${actualResponseStatusDelete}`,
+        ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
         await expectGetResponseStatus(

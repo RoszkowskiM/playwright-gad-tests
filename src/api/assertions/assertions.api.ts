@@ -16,16 +16,16 @@ export async function expectGetResponseStatus(
   ).toBe(expectedStatusCode);
 }
 
-export async function expectDeleteResponseStatus(
-  request: APIRequestContext,
-  url: string,
-  expectedStatusCode: number,
-  headers?: Headers,
-): Promise<void> {
-  const responseGet = await request.delete(url, { headers });
+// export async function expectDeleteResponseStatus(
+//   request: APIRequestContext,
+//   url: string,
+//   expectedStatusCode: number,
+//   headers?: Headers,
+// ): Promise<void> {
+//   const responseGet = await request.delete(url, { headers });
 
-  expect(
-    responseGet.status(),
-    `expected status code: ${expectedStatusCode}, received: ${responseGet.status()}`,
-  ).toBe(expectedStatusCode);
-}
+//   expect(
+//     responseGet.status(),
+//     `expected status code: ${expectedStatusCode}, received: ${responseGet.status()}`,
+//   ).toBe(expectedStatusCode);
+// }

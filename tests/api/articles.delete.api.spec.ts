@@ -1,16 +1,10 @@
-/* eslint-disable playwright/expect-expect */
-import {
-  expectDeleteResponseStatus,
-  expectGetResponseStatus,
-} from '@_src/api/assertions/assertions.api';
+import { expectGetResponseStatus } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
-import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
-import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
 import { test } from '@_src/merge.fixture';
-import { APIResponse } from '@playwright/test';
+import { APIResponse, expect } from '@playwright/test';
 
 test.describe(
   'Verify articles DELETE operations',
@@ -19,12 +13,7 @@ test.describe(
   },
   () => {
     let articleData: ArticlePayload;
-    let headers: Headers;
     let responseArticle: APIResponse;
-
-    test.beforeAll('user login', async ({ request }) => {
-      headers = await getAuthHeader(request);
-    });
 
     test.beforeEach(
       'create an article',
@@ -42,27 +31,32 @@ test.describe(
       {
         tag: ['@GAD-R09-03'],
       },
-      async ({ request }) => {
+      async ({ articlesRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCodeDelete = 200;
         const expectedStatusCodeGet = 404;
         const articleJson = await responseArticle.json();
         const articleId = articleJson.id;
 
+        // Act
+        const responseArticleDelete =
+          await articlesRequestLoggedIn.delete(articleId);
+
         // Assert DELETE
-        await expectDeleteResponseStatus(
-          request,
-          `${apiUrls.articlesUrl}/${articleId}`,
-          expectedStatusCodeDelete,
-          headers,
-        );
+        const actualResponseStatusDelete = responseArticleDelete.status();
+        expect(
+          actualResponseStatusDelete,
+          `expected status code: ${expectedStatusCodeDelete}, received: ${actualResponseStatusDelete}`,
+        ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
-        await expectGetResponseStatus(
-          request,
-          `${apiUrls.articlesUrl}/${articleId}`,
-          expectedStatusCodeGet,
-        );
+        const responseArticleGet =
+          await articlesRequestLoggedIn.getOneArticle(articleId);
+        const actualResponseStatusGet = responseArticleGet.status();
+        expect(
+          actualResponseStatusGet,
+          `expected status code: ${expectedStatusCodeGet}, received: ${actualResponseStatusGet}`,
+        ).toBe(expectedStatusCodeGet);
       },
     );
 
@@ -71,25 +65,28 @@ test.describe(
       {
         tag: ['@GAD-R09-03'],
       },
-      async ({ request }) => {
+      async ({ request, articlesRequest }) => {
         // Arrange
         const expectedStatusCodeDelete = 401;
-        const expectedStatusCodeGet = 200;
         const articleJson = await responseArticle.json();
         const articleId = articleJson.id;
 
+        // Act
+        const responseArticleDelete = await articlesRequest.delete(articleId);
+
         // Assert DELETE
-        await expectDeleteResponseStatus(
-          request,
-          `${apiUrls.articlesUrl}/${articleId}`,
-          expectedStatusCodeDelete,
-        );
+        const actualResponseStatusDelete = responseArticleDelete.status();
+        expect(
+          actualResponseStatusDelete,
+          `expected status code: ${expectedStatusCodeDelete}, received: ${actualResponseStatusDelete}`,
+        ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
+        const expectedNotDeletedArticleStatusCode = 200;
         await expectGetResponseStatus(
           request,
           `${apiUrls.articlesUrl}/${articleId}`,
-          expectedStatusCodeGet,
+          expectedNotDeletedArticleStatusCode,
         );
       },
     );
