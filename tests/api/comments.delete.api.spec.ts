@@ -1,8 +1,6 @@
 import { expectGetResponseStatus } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
-import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { prepareAndCreateCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
-import { Headers } from '@_src/api/models/header.api.model';
 import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
@@ -14,28 +12,19 @@ test.describe(
   () => {
     let articleId: number;
     let commentId: number;
-    let headers: Headers;
 
-    test.beforeAll(
-      'create an article',
-      async ({ request, articlesRequestLoggedIn }) => {
-        // User login
-        headers = await getAuthHeader(request);
+    test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {
+      const responseArticle = await createArticleWithApi(
+        articlesRequestLoggedIn,
+      );
 
-        // Create article
-        const responseArticle = await createArticleWithApi(
-          articlesRequestLoggedIn,
-        );
-
-        const article = await responseArticle.json();
-        articleId = article.id;
-      },
-    );
+      const article = await responseArticle.json();
+      articleId = article.id;
+    });
 
     test.beforeEach('create a comment', async ({ commentsRequestLoggedIn }) => {
       const responseComment = await prepareAndCreateCommentWithApi(
         commentsRequestLoggedIn,
-        headers,
         articleId,
       );
       const commentJson = await responseComment.json();

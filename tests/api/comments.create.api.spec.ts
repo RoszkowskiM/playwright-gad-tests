@@ -1,8 +1,6 @@
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
-import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
-import { Headers } from '@_src/api/models/header.api.model';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -12,23 +10,15 @@ test.describe(
   },
   () => {
     let articleId: number;
-    let headers: Headers;
 
-    test.beforeAll(
-      'create an article',
-      async ({ request, articlesRequestLoggedIn }) => {
-        // User login
-        headers = await getAuthHeader(request);
+    test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {
+      const responseArticle = await createArticleWithApi(
+        articlesRequestLoggedIn,
+      );
 
-        // Create article
-        const responseArticle = await createArticleWithApi(
-          articlesRequestLoggedIn,
-        );
-
-        const article = await responseArticle.json();
-        articleId = article.id;
-      },
-    );
+      const article = await responseArticle.json();
+      articleId = article.id;
+    });
 
     test(
       'should not create a comment without a logged-in user',
@@ -61,7 +51,6 @@ test.describe(
         const commentData = prepareCommentPayload(articleId);
         const responseComment = await createCommentWithApi(
           commentsRequestLoggedIn,
-          headers,
           commentData,
         );
 

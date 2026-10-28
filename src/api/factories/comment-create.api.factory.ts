@@ -1,23 +1,20 @@
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
-import { Headers } from '@_src/api/models/header.api.model';
 import { CommentsRequest } from '@_src/api/requests/comments.request';
 import { expect } from '@_src/merge.fixture';
 import { APIResponse } from '@playwright/test';
 
 export async function prepareAndCreateCommentWithApi(
   commentsRequest: CommentsRequest,
-  headers: Headers,
   articleId: number,
 ): Promise<APIResponse> {
   const commentData = prepareCommentPayload(articleId);
 
-  return await createCommentWithApi(commentsRequest, headers, commentData);
+  return await createCommentWithApi(commentsRequest, commentData);
 }
 
 export async function createCommentWithApi(
   commentsRequest: CommentsRequest,
-  headers: Headers,
   commentData: CommentPayload,
 ): Promise<APIResponse> {
   const responseComment = await commentsRequest.post(commentData);
