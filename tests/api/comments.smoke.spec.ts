@@ -1,4 +1,3 @@
-import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -8,12 +7,14 @@ test.describe(
   },
   () => {
     test.describe('Verify each condition in separate test', () => {
-      test('GET comments returns status code 200', async ({ request }) => {
+      test('GET comments returns status code 200', async ({
+        commentsRequest,
+      }) => {
         // Arrange
         const expectedStatusCode = 200;
 
         // Act
-        const response = await request.get(apiUrls.commentsUrl);
+        const response = await commentsRequest.get();
 
         // Assert
         expect(response.status()).toBe(expectedStatusCode);
@@ -24,12 +25,12 @@ test.describe(
         {
           tag: ['@predefined_data'],
         },
-        async ({ request }) => {
+        async ({ commentsRequest }) => {
           // Arrange
           const expectedMinCommentsCount = 1;
 
           // Act
-          const response = await request.get(apiUrls.commentsUrl);
+          const response = await commentsRequest.get();
           const responseJson = await response.json();
 
           // Assert
@@ -44,7 +45,7 @@ test.describe(
         {
           tag: ['@GAD-R08-02', '@predefined_data'],
         },
-        async ({ request }) => {
+        async ({ commentsRequest }) => {
           // Arrange
           const expectedRequiredFields = [
             'id',
@@ -55,7 +56,7 @@ test.describe(
           ];
 
           // Act
-          const response = await request.get(apiUrls.commentsUrl);
+          const response = await commentsRequest.get();
           const responseJson = await response.json();
           const comment = responseJson[0];
 
@@ -74,9 +75,9 @@ test.describe(
       {
         tag: ['@predefined_data'],
       },
-      async ({ request }) => {
+      async ({ commentsRequest }) => {
         // Arrange
-        const response = await request.get(apiUrls.commentsUrl);
+        const response = await commentsRequest.get();
         const responseJson = await response.json();
 
         await test.step('GET comments returns status code 200', async () => {

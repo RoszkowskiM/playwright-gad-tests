@@ -32,9 +32,9 @@ test.describe(
       },
     );
 
-    test.beforeEach('create a comment', async ({ request }) => {
+    test.beforeEach('create a comment', async ({ commentsRequestLoggedIn }) => {
       const responseComment = await prepareAndCreateCommentWithApi(
-        request,
+        commentsRequestLoggedIn,
         headers,
         articleId,
       );
@@ -47,16 +47,14 @@ test.describe(
       {
         tag: ['@GAD-R09-04'],
       },
-      async ({ request }) => {
+      async ({ request, commentsRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCodeDelete = 200;
         const expectedStatusCodeGet = 404;
 
         // Act
-        const responseCommentDelete = await request.delete(
-          `${apiUrls.commentsUrl}/${commentId}`,
-          { headers },
-        );
+        const responseCommentDelete =
+          await commentsRequestLoggedIn.delete(commentId);
 
         // Assert DELETE
         const actualResponseStatusDelete = responseCommentDelete.status();
@@ -79,15 +77,13 @@ test.describe(
       {
         tag: ['@GAD-R09-04'],
       },
-      async ({ request }) => {
+      async ({ request, commentsRequest }) => {
         // Arrange
         const expectedStatusCodeDelete = 401;
         const expectedStatusCodeGet = 200;
 
         // Assert DELETE
-        const responseCommentDelete = await request.delete(
-          `${apiUrls.commentsUrl}/${commentId}`,
-        );
+        const responseCommentDelete = await commentsRequest.delete(commentId);
 
         // Assert DELETE
         const actualResponseStatusDelete = responseCommentDelete.status();

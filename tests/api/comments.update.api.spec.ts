@@ -4,7 +4,6 @@ import { createCommentWithApi } from '@_src/api/factories/comment-create.api.fac
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { CommentPayload } from '@_src/api/models/comment-payload.api.model';
 import { Headers } from '@_src/api/models/header.api.model';
-import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -34,10 +33,10 @@ test.describe(
       },
     );
 
-    test.beforeEach('create a comment', async ({ request }) => {
+    test.beforeEach('create a comment', async ({ commentsRequestLoggedIn }) => {
       commentData = prepareCommentPayload(articleId);
       const responseComment = await createCommentWithApi(
-        request,
+        commentsRequestLoggedIn,
         headers,
         commentData,
       );
@@ -56,18 +55,15 @@ test.describe(
           {
             tag: ['@GAD-R10-02'],
           },
-          async ({ request }) => {
+          async ({ commentsRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePut = 200;
             const modifiedCommentData = prepareCommentPayload(articleId);
 
             // Act
-            const responseCommentPut = await request.put(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                headers,
-                data: modifiedCommentData,
-              },
+            const responseCommentPut = await commentsRequestLoggedIn.put(
+              commentId,
+              modifiedCommentData,
             );
 
             // Assert PUT
@@ -78,9 +74,8 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const modifiedCommentGet = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
+            const modifiedCommentGet =
+              await commentsRequestLoggedIn.getOneComment(commentId);
 
             const modifiedCommentJson = await modifiedCommentGet.json();
             expect
@@ -95,17 +90,15 @@ test.describe(
           {
             tag: ['@GAD-R10-02'],
           },
-          async ({ request }) => {
+          async ({ commentsRequest }) => {
             // Arrange
             const expectedStatusCodePut = 401;
             const modifiedCommentData = prepareCommentPayload(articleId);
 
             // Act
-            const responseCommentPut = await request.put(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                data: modifiedCommentData,
-              },
+            const responseCommentPut = await commentsRequest.put(
+              commentId,
+              modifiedCommentData,
             );
 
             // Assert PUT
@@ -116,9 +109,8 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedComment = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
+            const nonModifiedComment =
+              await commentsRequest.getOneComment(commentId);
 
             const nonModifiedCommentJson = await nonModifiedComment.json();
             expect
@@ -141,7 +133,7 @@ test.describe(
           {
             tag: ['@GAD-R10-04'],
           },
-          async ({ request }) => {
+          async ({ commentsRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePatch = 200;
             const modifiedCommentData = {
@@ -149,12 +141,9 @@ test.describe(
             };
 
             // Act
-            const responseCommentPatch = await request.patch(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                headers,
-                data: modifiedCommentData,
-              },
+            const responseCommentPatch = await commentsRequestLoggedIn.patch(
+              commentId,
+              modifiedCommentData,
             );
 
             // Assert PATCH
@@ -165,9 +154,8 @@ test.describe(
             ).toBe(expectedStatusCodePatch);
 
             // Assert GET
-            const modifiedCommentGet = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
+            const modifiedCommentGet =
+              await commentsRequestLoggedIn.getOneComment(commentId);
 
             const modifiedCommentJson = await modifiedCommentGet.json();
 
@@ -184,7 +172,7 @@ test.describe(
           {
             tag: ['@GAD-R10-04'],
           },
-          async ({ request }) => {
+          async ({ commentsRequest }) => {
             // Arrange
             const expectedStatusCodePut = 401;
             const modifiedCommentData = {
@@ -192,11 +180,9 @@ test.describe(
             };
 
             // Act
-            const responseCommentPatch = await request.patch(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                data: modifiedCommentData,
-              },
+            const responseCommentPatch = await commentsRequest.patch(
+              commentId,
+              modifiedCommentData,
             );
 
             // Assert PATCH
@@ -207,9 +193,8 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedComment = await request.get(
-              `${apiUrls.commentsUrl}/${commentId}`,
-            );
+            const nonModifiedComment =
+              await commentsRequest.getOneComment(commentId);
 
             const nonModifiedCommentJson = await nonModifiedComment.json();
 
@@ -226,7 +211,7 @@ test.describe(
           {
             tag: ['@GAD-R10-04'],
           },
-          async ({ request }) => {
+          async ({ commentsRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePut = 422;
             const nonExistingField = `nonExistingField`;
@@ -239,12 +224,9 @@ test.describe(
             modifiedCommentData[nonExistingField] = 'Hello';
 
             // Act
-            const responseCommentPatch = await request.patch(
-              `${apiUrls.commentsUrl}/${commentId}`,
-              {
-                headers,
-                data: modifiedCommentData,
-              },
+            const responseCommentPatch = await commentsRequestLoggedIn.patch(
+              commentId,
+              modifiedCommentData,
             );
 
             // Assert PUT

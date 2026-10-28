@@ -3,7 +3,6 @@ import { getAuthHeader } from '@_src/api/factories/auth-header.api.factory';
 import { createCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
 import { prepareCommentPayload } from '@_src/api/factories/comment-payload.api.factory';
 import { Headers } from '@_src/api/models/header.api.model';
-import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -36,15 +35,13 @@ test.describe(
       {
         tag: ['@GAD-R09-02'],
       },
-      async ({ request }) => {
+      async ({ commentsRequest }) => {
         // Arrange
         const expectedStatusCode = 401;
         const commentData = prepareCommentPayload(articleId);
 
         // Act
-        const responseComment = await request.post(apiUrls.commentsUrl, {
-          data: commentData,
-        });
+        const responseComment = await commentsRequest.post(commentData);
 
         // Assert
         expect(responseComment.status()).toBe(expectedStatusCode);
@@ -56,14 +53,14 @@ test.describe(
       {
         tag: ['@GAD-R09-02'],
       },
-      async ({ request }) => {
+      async ({ commentsRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCode = 201;
 
         // Act
         const commentData = prepareCommentPayload(articleId);
         const responseComment = await createCommentWithApi(
-          request,
+          commentsRequestLoggedIn,
           headers,
           commentData,
         );
@@ -85,19 +82,16 @@ test.describe(
       {
         tag: ['@GAD-R10-02'],
       },
-      async ({ request }) => {
+      async ({ commentsRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCodePut = 201;
         const commentData = prepareCommentPayload(articleId);
 
         // Act
-        const responseCommentPut = await request.put(
-          `${apiUrls.commentsUrl}/${new Date().valueOf()}`,
-          {
-            headers,
-            data: commentData,
-          },
-        );
+        const responseCommentPut =
+          await commentsRequestLoggedIn.putWithNonExistingCommentId(
+            commentData,
+          );
 
         // Assert PUT
         const actualResponseStatus = responseCommentPut.status();
@@ -108,8 +102,8 @@ test.describe(
 
         // Assert GET
         const commentPutJson = await responseCommentPut.json();
-        const responseCommentGet = await request.get(
-          `${apiUrls.commentsUrl}/${commentPutJson.id}`,
+        const responseCommentGet = await commentsRequestLoggedIn.getOneComment(
+          commentPutJson.id,
         );
 
         const commentGetJson = await responseCommentGet.json();
