@@ -39,8 +39,7 @@ export class CommentsRequest {
   async putWithNonExistingCommentId(
     data: CommentPayload,
   ): Promise<APIResponse> {
-    const timeStamp = await timestamp();
-    return await this.request.put(`${this.url}/${timeStamp}`, {
+    return await this.request.put(`${this.url}/${timestamp()}`, {
       headers: this.headers,
       data,
     });

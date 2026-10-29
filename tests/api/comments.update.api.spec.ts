@@ -122,7 +122,7 @@ test.describe(
           {
             tag: ['@GAD-R10-04'],
           },
-          async ({ commentsRequestLoggedIn }) => {
+          async ({ commentsRequest, commentsRequestLoggedIn }) => {
             // Arrange
             const expectedStatusCodePatch = 200;
             const modifiedCommentData = {
@@ -144,7 +144,7 @@ test.describe(
 
             // Assert GET
             const modifiedCommentGet =
-              await commentsRequestLoggedIn.getOneComment(commentId);
+              await commentsRequest.getOneComment(commentId);
 
             const modifiedCommentJson = await modifiedCommentGet.json();
 

@@ -71,7 +71,7 @@ test.describe(
       {
         tag: ['@GAD-R10-02'],
       },
-      async ({ commentsRequestLoggedIn }) => {
+      async ({ commentsRequest, commentsRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCodePut = 201;
         const commentData = prepareCommentPayload(articleId);
@@ -91,7 +91,7 @@ test.describe(
 
         // Assert GET
         const commentPutJson = await responseCommentPut.json();
-        const responseCommentGet = await commentsRequestLoggedIn.getOneComment(
+        const responseCommentGet = await commentsRequest.getOneComment(
           commentPutJson.id,
         );
 
