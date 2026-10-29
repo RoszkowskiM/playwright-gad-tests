@@ -91,7 +91,7 @@ test.describe(
 
         // Assert GET
         const commentPutJson = await responseCommentPut.json();
-        const responseCommentGet = await commentsRequest.getOneComment(
+        const responseCommentGet = await commentsRequest.getOne(
           commentPutJson.id,
         );
 

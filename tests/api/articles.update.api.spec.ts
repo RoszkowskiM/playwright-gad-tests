@@ -94,8 +94,7 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedArticle =
-              await articlesRequest.getOneArticle(articleId);
+            const nonModifiedArticle = await articlesRequest.getOne(articleId);
 
             const nonModifiedArticleJson = await nonModifiedArticle.json();
 
@@ -185,8 +184,7 @@ test.describe(
             ).toBe(expectedStatusCodePatch);
 
             // Assert GET
-            const nonModifiedArticle =
-              await articlesRequest.getOneArticle(articleId);
+            const nonModifiedArticle = await articlesRequest.getOne(articleId);
 
             const nonModifiedArticleJson = await nonModifiedArticle.json();
 

@@ -64,7 +64,7 @@ test.describe(
 
             // Assert GET
             const modifiedCommentGet =
-              await commentsRequestLoggedIn.getOneComment(commentId);
+              await commentsRequestLoggedIn.getOne(commentId);
 
             const modifiedCommentJson = await modifiedCommentGet.json();
             expect
@@ -98,8 +98,7 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedComment =
-              await commentsRequest.getOneComment(commentId);
+            const nonModifiedComment = await commentsRequest.getOne(commentId);
 
             const nonModifiedCommentJson = await nonModifiedComment.json();
             expect
@@ -143,8 +142,7 @@ test.describe(
             ).toBe(expectedStatusCodePatch);
 
             // Assert GET
-            const modifiedCommentGet =
-              await commentsRequest.getOneComment(commentId);
+            const modifiedCommentGet = await commentsRequest.getOne(commentId);
 
             const modifiedCommentJson = await modifiedCommentGet.json();
 
@@ -182,8 +180,7 @@ test.describe(
             ).toBe(expectedStatusCodePut);
 
             // Assert GET
-            const nonModifiedComment =
-              await commentsRequest.getOneComment(commentId);
+            const nonModifiedComment = await commentsRequest.getOne(commentId);
 
             const nonModifiedCommentJson = await nonModifiedComment.json();
 

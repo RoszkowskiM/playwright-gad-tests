@@ -23,9 +23,7 @@ export async function createCommentWithApi(
   const expectedStatusCode = 200;
 
   await expect(async () => {
-    const responseCommentCreated = await commentsRequest.getOneComment(
-      commentJson.id,
-    );
+    const responseCommentCreated = await commentsRequest.getOne(commentJson.id);
     expect(
       responseCommentCreated.status(),
       `Expected status: ${expectedStatusCode}, observed: ${responseCommentCreated.status()}`,

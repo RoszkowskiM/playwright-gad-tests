@@ -1,7 +1,6 @@
-import { expectGetResponseStatus } from '@_src/api/assertions/assertions.api';
+import { expectGetOneResponseStatus } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareAndCreateCommentWithApi } from '@_src/api/factories/comment-create.api.factory';
-import { apiUrls } from '@_src/api/utils/api.util';
 import { expect, test } from '@_src/merge.fixture';
 
 test.describe(
@@ -36,7 +35,7 @@ test.describe(
       {
         tag: ['@GAD-R09-04'],
       },
-      async ({ request, commentsRequestLoggedIn }) => {
+      async ({ commentsRequestLoggedIn }) => {
         // Arrange
         const expectedStatusCodeDelete = 200;
         const expectedStatusCodeGet = 404;
@@ -53,9 +52,9 @@ test.describe(
         ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
-        await expectGetResponseStatus(
-          request,
-          `${apiUrls.commentsUrl}/${commentId}`,
+        await expectGetOneResponseStatus(
+          commentsRequestLoggedIn,
+          commentId,
           expectedStatusCodeGet,
         );
       },
@@ -66,7 +65,7 @@ test.describe(
       {
         tag: ['@GAD-R09-04'],
       },
-      async ({ request, commentsRequest }) => {
+      async ({ commentsRequest }) => {
         // Arrange
         const expectedStatusCodeDelete = 401;
         const expectedStatusCodeGet = 200;
@@ -82,9 +81,9 @@ test.describe(
         ).toBe(expectedStatusCodeDelete);
 
         // Assert GET
-        await expectGetResponseStatus(
-          request,
-          `${apiUrls.commentsUrl}/${commentId}`,
+        await expectGetOneResponseStatus(
+          commentsRequest,
+          commentId,
           expectedStatusCodeGet,
         );
       },

@@ -16,7 +16,7 @@ export class ArticlesRequest {
     });
   }
 
-  async getOneArticle(articleId: string): Promise<APIResponse> {
+  async getOne(articleId: number): Promise<APIResponse> {
     return await this.request.get(`${this.url}/${articleId}`, {
       headers: this.headers,
     });
@@ -29,7 +29,7 @@ export class ArticlesRequest {
     });
   }
 
-  async put(articleId: string, data: ArticlePayload): Promise<APIResponse> {
+  async put(articleId: number, data: ArticlePayload): Promise<APIResponse> {
     return await this.request.put(`${this.url}/${articleId}`, {
       headers: this.headers,
       data,
@@ -46,7 +46,7 @@ export class ArticlesRequest {
   }
 
   async patch(
-    articleId: string,
+    articleId: number,
     data: Partial<ArticlePayload>,
   ): Promise<APIResponse> {
     return await this.request.patch(`${this.url}/${articleId}`, {
@@ -55,7 +55,7 @@ export class ArticlesRequest {
     });
   }
 
-  async delete(articleId: string): Promise<APIResponse> {
+  async delete(articleId: number): Promise<APIResponse> {
     return await this.request.delete(`${this.url}/${articleId}`, {
       headers: this.headers,
     });

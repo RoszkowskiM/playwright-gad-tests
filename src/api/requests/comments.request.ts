@@ -16,7 +16,7 @@ export class CommentsRequest {
     });
   }
 
-  async getOneComment(commentId: number): Promise<APIResponse> {
+  async getOne(commentId: number): Promise<APIResponse> {
     return await this.request.get(`${this.url}/${commentId}`, {
       headers: this.headers,
     });

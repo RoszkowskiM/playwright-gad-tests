@@ -15,9 +15,7 @@ export async function createArticleWithApi(
   const expectedStatusCode = 200;
 
   await expect(async () => {
-    const responseArticleCreated = await articlesRequest.getOneArticle(
-      articleJson.id,
-    );
+    const responseArticleCreated = await articlesRequest.getOne(articleJson.id);
     expect(
       responseArticleCreated.status(),
       `Expected status: ${expectedStatusCode}, observed: ${responseArticleCreated.status()}`,

@@ -1,31 +1,16 @@
-import { Headers } from '@_src/api/models/header.api.model';
+import { ArticlesRequest } from '@_src/api/requests/articles.request';
+import { CommentsRequest } from '@_src/api/requests/comments.request';
 import { expect } from '@_src/merge.fixture';
-import { APIRequestContext } from '@playwright/test';
 
-export async function expectGetResponseStatus(
-  request: APIRequestContext,
-  url: string,
+export async function expectGetOneResponseStatus(
+  requestObject: ArticlesRequest | CommentsRequest,
+  id: number,
   expectedStatusCode: number,
-  headers?: Headers,
 ): Promise<void> {
-  const responseGet = await request.get(url, { headers });
+  const responseGet = await requestObject.getOne(id);
 
   expect(
     responseGet.status(),
     `expected status code: ${expectedStatusCode}, received: ${responseGet.status()}`,
   ).toBe(expectedStatusCode);
 }
-
-// export async function expectDeleteResponseStatus(
-//   request: APIRequestContext,
-//   url: string,
-//   expectedStatusCode: number,
-//   headers?: Headers,
-// ): Promise<void> {
-//   const responseGet = await request.delete(url, { headers });
-
-//   expect(
-//     responseGet.status(),
-//     `expected status code: ${expectedStatusCode}, received: ${responseGet.status()}`,
-//   ).toBe(expectedStatusCode);
-// }

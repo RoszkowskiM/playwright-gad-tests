@@ -1,8 +1,7 @@
-import { expectGetResponseStatus } from '@_src/api/assertions/assertions.api';
+import { expectGetOneResponseStatus } from '@_src/api/assertions/assertions.api';
 import { createArticleWithApi } from '@_src/api/factories/article-create.api.factory';
 import { prepareArticlePayload } from '@_src/api/factories/article-payload.api.factory';
 import { ArticlePayload } from '@_src/api/models/article-payload.api.model';
-import { apiUrls } from '@_src/api/utils/api.util';
 import { test } from '@_src/merge.fixture';
 import { APIResponse, expect } from '@playwright/test';
 
@@ -51,7 +50,7 @@ test.describe(
 
         // Assert GET
         const responseArticleGet =
-          await articlesRequestLoggedIn.getOneArticle(articleId);
+          await articlesRequestLoggedIn.getOne(articleId);
         const actualResponseStatusGet = responseArticleGet.status();
         expect(
           actualResponseStatusGet,
@@ -65,7 +64,7 @@ test.describe(
       {
         tag: ['@GAD-R09-03'],
       },
-      async ({ request, articlesRequest }) => {
+      async ({ articlesRequest }) => {
         // Arrange
         const expectedStatusCodeDelete = 401;
         const articleJson = await responseArticle.json();
@@ -83,9 +82,9 @@ test.describe(
 
         // Assert GET
         const expectedNotDeletedArticleStatusCode = 200;
-        await expectGetResponseStatus(
-          request,
-          `${apiUrls.articlesUrl}/${articleId}`,
+        await expectGetOneResponseStatus(
+          articlesRequest,
+          articleId,
           expectedNotDeletedArticleStatusCode,
         );
       },
