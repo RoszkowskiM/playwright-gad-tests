@@ -30,19 +30,24 @@ export default defineConfig({
     {
       name: 'api',
       testDir: 'tests/api',
-      grepInvert: /@logged/,
-      use: { ...devices['Desktop Chrome'] },
+      dependencies: ['health'],
     },
     {
       name: 'chromium-not-logged',
       grepInvert: /@logged/,
       testDir: 'tests/ui',
+      dependencies: ['health'],
       use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'setup',
       testMatch: '*.setup.ts',
+      dependencies: ['health'],
       use: { ...devices['Desktop Chrome'] },
+    },
+    {
+      name: 'health',
+      testMatch: '*.health.ts',
     },
     {
       name: 'chromium-logged',

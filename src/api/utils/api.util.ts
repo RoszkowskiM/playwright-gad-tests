@@ -2,6 +2,7 @@ export const apiUrls = {
   loginUrl: '/api/login',
   articlesUrl: '/api/articles',
   commentsUrl: '/api/comments',
+  healthUrl: '/api/health',
 };
 
 export async function timestamp(): Promise<number> {
