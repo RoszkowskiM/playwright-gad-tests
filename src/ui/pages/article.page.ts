@@ -53,4 +53,9 @@ export class ArticlePage extends BasePage {
     await this.addCommentButton.click();
     return new AddCommentView(this.page);
   }
+
+  async gotoId(id: string): Promise<ArticlePage> {
+    await this.page.goto(`${this.url}?id=${id}`);
+    return this;
+  }
 }
