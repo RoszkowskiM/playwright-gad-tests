@@ -4,7 +4,7 @@ import { expect } from '@_src/merge.fixture';
 
 export async function expectGetOneResponseStatus(
   requestObject: ArticlesRequest | CommentsRequest,
-  id: number,
+  id: string,
   expectedStatusCode: number,
 ): Promise<void> {
   const responseGet = await requestObject.getOne(id);

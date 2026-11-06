@@ -10,7 +10,7 @@ test.describe(
   },
   () => {
     let articleId: string;
-    let commentId: number;
+    let commentId: string;
 
     test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {
       const responseArticle = await createArticleWithApi(

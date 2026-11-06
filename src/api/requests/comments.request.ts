@@ -16,7 +16,7 @@ export class CommentsRequest {
     });
   }
 
-  async getOne(commentId: number): Promise<APIResponse> {
+  async getOne(commentId: string): Promise<APIResponse> {
     return await this.request.get(`${this.url}/${commentId}`, {
       headers: this.headers,
     });
@@ -29,7 +29,7 @@ export class CommentsRequest {
     });
   }
 
-  async put(commentId: number, data: CommentPayload): Promise<APIResponse> {
+  async put(commentId: string, data: CommentPayload): Promise<APIResponse> {
     return await this.request.put(`${this.url}/${commentId}`, {
       headers: this.headers,
       data,
@@ -46,7 +46,7 @@ export class CommentsRequest {
   }
 
   async patch(
-    commentId: number,
+    commentId: string,
     data: Partial<CommentPayload>,
   ): Promise<APIResponse> {
     return await this.request.patch(`${this.url}/${commentId}`, {
@@ -55,7 +55,7 @@ export class CommentsRequest {
     });
   }
 
-  async delete(commentId: number): Promise<APIResponse> {
+  async delete(commentId: string): Promise<APIResponse> {
     return await this.request.delete(`${this.url}/${commentId}`, {
       headers: this.headers,
     });

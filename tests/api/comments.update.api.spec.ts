@@ -11,7 +11,7 @@ test.describe(
   },
   () => {
     let articleId: string;
-    let commentId: number;
+    let commentId: string;
     let commentData: CommentPayload;
 
     test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {
