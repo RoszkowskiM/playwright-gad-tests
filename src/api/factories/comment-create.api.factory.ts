@@ -6,7 +6,7 @@ import { APIResponse } from '@playwright/test';
 
 export async function prepareAndCreateCommentWithApi(
   commentsRequest: CommentsRequest,
-  articleId: number,
+  articleId: string,
 ): Promise<APIResponse> {
   const commentData = prepareCommentPayload(articleId);
 

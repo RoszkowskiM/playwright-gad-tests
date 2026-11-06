@@ -1,5 +1,6 @@
 import { ArticlePage } from '@_src/ui/pages/article.page';
 import { ArticlesPage } from '@_src/ui/pages/articles.page';
+import { CommentPage } from '@_src/ui/pages/comment.page';
 import { CommentsPage } from '@_src/ui/pages/comments.page';
 import { HomePage } from '@_src/ui/pages/home.page';
 import { LoginPage } from '@_src/ui/pages/login.page';
@@ -12,6 +13,7 @@ interface Pages {
   articlePage: ArticlePage;
   articlesPage: ArticlesPage;
   commentsPage: CommentsPage;
+  commentPage: CommentPage;
   homePage: HomePage;
   loginPage: LoginPage;
   registerPage: RegisterPage;
@@ -35,6 +37,11 @@ export const pageObjectTest = baseTest.extend<Pages>({
     const commentsPage = new CommentsPage(page);
     await commentsPage.goto();
     await use(commentsPage);
+  },
+  commentPage: async ({ page }, use) => {
+    const commentPage = new CommentPage(page);
+    await commentPage.goto();
+    await use(commentPage);
   },
   homePage: async ({ page }, use) => {
     const homePage = new HomePage(page);

@@ -25,4 +25,9 @@ export class CommentPage extends BasePage {
     this.returnToArticleLink.click();
     return new ArticlePage(this.page);
   }
+
+  async goToId(id: string): Promise<CommentPage> {
+    await this.page.goto(`${this.url}?id=${id}`);
+    return this;
+  }
 }

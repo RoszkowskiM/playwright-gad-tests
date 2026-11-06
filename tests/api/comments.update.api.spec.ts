@@ -10,7 +10,7 @@ test.describe(
     tag: ['@CRUD', '@comments', '@UPDATE'],
   },
   () => {
-    let articleId: number;
+    let articleId: string;
     let commentId: number;
     let commentData: CommentPayload;
 

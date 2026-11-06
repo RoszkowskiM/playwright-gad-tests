@@ -10,7 +10,7 @@ export class EditCommentView {
   constructor(private page: Page) {
     this.bodyInput = this.page.getByTestId('body-input');
     this.updateButton = this.page.getByTestId('update-button');
-    this.cancelButton = this.page.locator('#Cancel');
+    this.cancelButton = this.page.getByRole('button', { name: 'Cancel' });
   }
 
   async updateComment(commentData: addCommentModel): Promise<CommentPage> {

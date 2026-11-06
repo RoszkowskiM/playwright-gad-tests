@@ -9,7 +9,7 @@ test.describe(
     tag: ['@CRUD', '@comments', '@DELETE'],
   },
   () => {
-    let articleId: number;
+    let articleId: string;
     let commentId: number;
 
     test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {

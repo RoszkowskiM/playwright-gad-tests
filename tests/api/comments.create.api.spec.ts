@@ -9,7 +9,7 @@ test.describe(
     tag: ['@CRUD', '@comments', '@CREATE'],
   },
   () => {
-    let articleId: number;
+    let articleId: string;
 
     test.beforeAll('create an article', async ({ articlesRequestLoggedIn }) => {
       const responseArticle = await createArticleWithApi(

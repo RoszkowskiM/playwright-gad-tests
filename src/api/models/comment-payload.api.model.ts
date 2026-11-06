@@ -1,5 +1,5 @@
 export interface CommentPayload {
-  article_id: number;
+  article_id: string;
   body: string;
   date: string;
 }

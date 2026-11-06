@@ -18,7 +18,7 @@ test.describe('Create, verify and delete comment', () => {
       const article = await responseArticle.json();
       articleId = article.id;
 
-      articlePageNew = await articlePage.gotoId(articleId);
+      articlePageNew = await articlePage.goToId(articleId);
     },
   );
 
